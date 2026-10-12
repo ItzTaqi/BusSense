@@ -6,13 +6,6 @@ import { useApp } from "../state/store";
 import { useTheme } from "../theme";
 
 // Privacy & Terms, written as plain numbered sections. It only describes what the app does today.
-const SUMMARY = [
-  "A bus is shown to parents only when 3 or more riders are on it.",
-  "Your location is tied to a random trip code, never to your name.",
-  "Location points are deleted when your trip ends, and always within 6 hours.",
-  "No ads, no analytics, no selling your data, no chat.",
-];
-
 const SECTIONS: { title: string; body: string[] }[] = [
   { title: "Who can use GoNC", body: [
     "Riders must be 13 or older. If you are under 13 you cannot share your location; a parent or guardian can use Parent mode instead.",
@@ -51,30 +44,23 @@ export function Privacy() {
     { text: "Delete", style: "destructive", onPress: async () => { await deleteAccount(); await supabase.auth.signOut(); set({ mode: null }); } },
   ]);
   return (
-    <View style={{ padding: 22, gap: 22 }}>
+    <View style={{ padding: 22, gap: 24 }}>
       <View style={{ gap: 6 }}>
         <Text accessibilityRole="header" style={{ fontSize: 26, fontWeight: "800", letterSpacing: -0.6, color: c.ink }}>Privacy and Terms</Text>
-        <Text style={{ fontSize: 13, color: c.sub }}>Draft · October 12, 2026</Text>
+        <Text style={{ fontSize: 13, color: c.sub }}>Last updated October 12, 2026 · Draft</Text>
       </View>
-
-      <View style={{ padding: 16, borderRadius: 16, backgroundColor: c.cardAlt, gap: 10 }}>
-        <Text accessibilityRole="header" style={{ fontSize: 15, fontWeight: "800", color: c.ink }}>The short version</Text>
-        {SUMMARY.map((t) => (
-          <View key={t} style={{ flexDirection: "row", gap: 10 }}>
-            <Text style={{ fontSize: 15, lineHeight: 22, color: c.primary }}>•</Text>
-            <Text style={{ flex: 1, fontSize: 15, lineHeight: 22, color: c.ink }}>{t}</Text>
-          </View>
-        ))}
-      </View>
+      <Text style={{ fontSize: 15, lineHeight: 23, color: c.sub }}>
+        By using GoNC you agree to these terms. Please read them carefully.
+      </Text>
 
       {SECTIONS.map((s, i) => (
-        <View key={s.title} style={{ gap: 8, paddingTop: 20, borderTopWidth: 1, borderColor: c.line }}>
+        <View key={s.title} style={{ gap: 8 }}>
           <Text accessibilityRole="header" style={{ fontSize: 17, fontWeight: "800", color: c.ink }}>{i + 1}. {s.title}</Text>
-          {s.body.map((p) => <Text key={p} style={{ fontSize: 15, lineHeight: 23, color: c.sub }}>{p}</Text>)}
+          {s.body.map((p) => <Text key={p} style={{ fontSize: 15, lineHeight: 23, color: c.ink }}>{p}</Text>)}
         </View>
       ))}
 
-      <View style={{ gap: 10, paddingTop: 20, borderTopWidth: 1, borderColor: c.line }}>
+      <View style={{ gap: 10, paddingTop: 8 }}>
         <Btn danger icon="trash" label="Delete my account" onPress={del} />
       </View>
     </View>
