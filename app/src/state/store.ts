@@ -3,6 +3,7 @@ import { create } from "zustand";
 import type { Lang } from "../i18n";
 import { Appearance, isAppearance } from "../lib/appearance";
 import { kvGet, kvSet } from "../lib/kv";
+import { TERMS_VERSION, needsAgreement } from "../lib/terms";
 
 export type Mode = "rider" | "parent";
 export type RiderStatus = "sleeping" | "listening" | "onBus" | "paused";
@@ -24,9 +25,15 @@ interface State {
   children: Child[];
   activeChild: number;
   appearance: Appearance;
-  set: (p: Partial<Pick<State, "lang" | "mode" | "birthYear" | "riderStatus" | "kRiders" | "declaredBus" | "tripToken" | "demo" | "children" | "activeChild" | "appearance">>) => void;
+  tripStartedAt: number | null;
+  riderName: string;
+  termsAccepted: boolean;
+  termsChecked: boolean;
+  set: (p: Partial<Pick<State, "lang" | "mode" | "birthYear" | "riderStatus" | "kRiders" | "declaredBus" | "tripToken" | "demo" | "children" | "activeChild" | "appearance" | "tripStartedAt" | "riderName">>) => void;
   setAppearance: (a: Appearance) => void;
   loadAppearance: () => Promise<void>;
+  acceptTerms: () => void;
+  loadTerms: () => Promise<void>;
   addChild: (c: Omit<Child, "id">) => void;
   removeChild: (id: string) => void;
   setActiveChild: (i: number) => void;
@@ -35,12 +42,13 @@ interface State {
 
 const KEY = "gonc.children.v1";
 const APPEARANCE_KEY = "gonc.appearance.v1";
+const TERMS_KEY = "gonc.terms.v1";
 
 export const useApp = create<State>((set, get) => {
   const save = () => { void kvSet(KEY, JSON.stringify(get().children)); };
   return {
     lang: "en", mode: null, birthYear: null, riderStatus: "sleeping", kRiders: 0,
-    declaredBus: "", tripToken: null, demo: false, children: [], activeChild: 0, appearance: "system",
+    declaredBus: "", tripToken: null, demo: false, children: [], activeChild: 0, appearance: "system", tripStartedAt: null, riderName: "", termsAccepted: false, termsChecked: false,
     set: (p) => set(p),
     addChild: (c) => {
       set((s) => ({ children: [...s.children, { ...c, id: Crypto.randomUUID() }], activeChild: s.children.length, mode: "parent" }));
@@ -54,6 +62,8 @@ export const useApp = create<State>((set, get) => {
       save();
     },
     setActiveChild: (i) => set({ activeChild: i }),
+    acceptTerms: () => { set({ termsAccepted: true }); void kvSet(TERMS_KEY, TERMS_VERSION); },
+    loadTerms: async () => { set({ termsAccepted: !needsAgreement(await kvGet(TERMS_KEY)), termsChecked: true }); },
     setAppearance: (a) => { set({ appearance: a }); void kvSet(APPEARANCE_KEY, a); },
     loadAppearance: async () => { const v = await kvGet(APPEARANCE_KEY); if (isAppearance(v)) set({ appearance: v }); },
     loadChildren: async () => {

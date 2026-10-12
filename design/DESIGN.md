@@ -20,7 +20,7 @@ Source of truth in code: `app/src/theme.ts` and `app/src/components/Ui.tsx`.
 2. **Touch targets** at least 48 pt (fields, buttons, tabs). Body text 16 pt, scales with system text size.
 3. **Motion:** one pulse (LIVE dot), off when the system "Reduce Motion" setting is on.
 4. **Layout:** all text, titles, cards and heroes are center-aligned. Form rows in Alerts keep label left, switch right.
-5. **Footer** "Community supplement – not the official WCPSS tracker." on every screen except the minimal home page.
+5. **No footer.** The "not the official tracker" disclaimer lives in the Privacy and Terms (section 10), which everyone must agree to after "Get started".
 6. **Light / dark:** Settings > Appearance offers System (default, follows the phone), Light and Dark. The choice is saved on the phone. `app.json` uses `userInterfaceStyle: automatic` so iOS and Android pass the device setting through.
 
 ## Type scale
@@ -60,6 +60,14 @@ One quiet "Report a problem" button on Today. Tapping it expands into "Bus didn'
 room). Sending collapses it back and shows "Thanks, report sent"; each choice locks for 60 s to prevent double reports.
 
 ## Bottom bar and safe areas
-The tab bar and the footer share one background (card color). The footer alone owns the bottom safe-area inset, so there is exactly one
-bottom strip on iPhones with a home indicator (no stacked spacers). The top inset is applied once, in the header bar. Dark mode uses a deep
-navy background, never near-black, so empty space matches the cards.
+The tab bar owns the bottom safe-area inset (home indicator) on screens that have one; the Welcome screen and the other tab-less screens add the
+inset themselves, once. The top inset is applied once, in the header bar. Dark mode uses a deep navy background, never near-black.
+
+## Terms agreement
+Welcome -> "Get started" -> Privacy and Terms with a checkbox ("I have read and agree") and "Agree and continue" (disabled until ticked)
+-> role screen. Acceptance is saved on the phone with a terms version (`app/src/lib/terms.ts`); changing the version asks everyone again.
+Anyone already set up who has not agreed is asked before the app opens.
+
+## Rider setup
+Name or nickname (stays on the phone) -> birthday -> bus -> bus times -> location -> motion. Every step has a back arrow; on the first step it
+returns to the home page. The rider home mirrors the parent's Today: date and "<name>'s bus".

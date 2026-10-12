@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "../theme";
 import type { IconName } from "./Ui";
 
@@ -7,8 +8,9 @@ export interface Tab { key: string; label: string; icon: IconName }
 
 export function TabBar({ tabs, active, onChange }: { tabs: Tab[]; active: string; onChange: (k: string) => void }) {
   const c = useTheme();
+  const insets = useSafeAreaInsets();
   return (
-    <View accessibilityRole="tablist" style={{ flexDirection: "row", backgroundColor: c.card, borderTopWidth: 1, borderColor: c.line, paddingTop: 6, paddingBottom: 4 }}>
+    <View accessibilityRole="tablist" style={{ flexDirection: "row", backgroundColor: c.card, borderTopWidth: 1, borderColor: c.line, paddingTop: 6, paddingBottom: 6 + insets.bottom }}>
       {tabs.map((t) => {
         const on = t.key === active;
         return (

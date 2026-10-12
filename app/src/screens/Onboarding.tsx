@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as Location from "expo-location";
 import { useState } from "react";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { DatePickerField } from "../components/DatePickerField";
 import { SelectField } from "../components/SelectField";
 import { Btn, IconBubble, Input, ProgressBar, type IconName } from "../components/Ui";
@@ -14,12 +14,13 @@ import { AFTERNOON_OPTIONS, MORNING_OPTIONS, isStudentId, parseLabel, toHHMM, wi
 import { useApp } from "../state/store";
 import { useTheme } from "../theme";
 
-const TOTAL = 5;
+const TOTAL = 6;
 
-export function Onboarding({ onParent }: { onParent: () => void }) {
+export function Onboarding({ onParent, onHome }: { onParent: () => void; onHome: () => void }) {
   const set = useApp((s) => s.set);
   const c = useTheme();
   const [step, setStep] = useState(0);
+  const [name, setName] = useState("");
   const [dob, setDob] = useState<YMD | null>(null);
   const [city, setCity] = useState("");
   const [school, setSchool] = useState("");
@@ -48,13 +49,13 @@ export function Onboarding({ onParent }: { onParent: () => void }) {
         am_window_start: w.amStart, am_window_end: w.amEnd, pm_window_start: w.pmStart, pm_window_end: w.pmEnd,
       });
     }
-    set({ mode: "rider", birthYear: dob?.y ?? null, declaredBus: bus.trim() });
+    set({ mode: "rider", birthYear: dob?.y ?? null, declaredBus: bus.trim(), riderName: name.trim() }); // the name stays on this phone
   };
 
   // Ask the OS for location permission, then move on (a "no" is fine: they can allow it later in Settings).
   const askLocation = async () => {
     try { await Location.requestForegroundPermissionsAsync(); } catch { /* browser preview / denied */ }
-    setStep(4);
+    setStep(5);
   };
 
   const title = (t: string, sub?: string) => (
@@ -79,18 +80,31 @@ export function Onboarding({ onParent }: { onParent: () => void }) {
       <Text style={{ fontSize: 15, lineHeight: 22, textAlign: "center", color: c.sub }}>{INELIGIBLE_BODY}</Text>
       <Btn primary icon="people" label="A parent can use Parent mode" onPress={onParent} />
       <Btn label="Change my birthday" onPress={() => { setIneligible(false); setDob(null); }} />
+      <Btn label="Back to home" onPress={onHome} />
     </View>
   );
 
   return (
     <View style={{ flex: 1, padding: 20, gap: 14, width: "100%", maxWidth: 420, alignSelf: "center" }}>
-      <ProgressBar step={step + 1} total={TOTAL} />
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+        <Pressable accessibilityRole="button" accessibilityLabel={step === 0 ? "Back to home" : "Back"} onPress={() => (step === 0 ? onHome() : setStep(step - 1))}
+          style={{ width: 40, height: 40, alignItems: "center", justifyContent: "center" }}>
+          <Ionicons name="chevron-back" size={24} color={c.primary} />
+        </Pressable>
+        <View style={{ flex: 1 }}><ProgressBar step={step + 1} total={TOTAL} /></View>
+        <View style={{ width: 40 }} />
+      </View>
       {step === 0 && (<>
-        {title("Your birthday", "Riders under 13 use Parent mode only. Your birthday stays on your phone.")}
-        <DatePickerField label="Birthday" value={dob} onChange={setDob} />
-        <Btn primary label="Next" disabled={!dob} onPress={() => (dob && isEligibleRider(dob) ? setStep(1) : setIneligible(true))} />
+        {title("What's your name?", "A first name or nickname. It only shows on your phone.")}
+        <Input accessibilityLabel="Your name or nickname" placeholder="Name or nickname" maxLength={20} value={name} onChangeText={setName} />
+        <Btn primary label="Next" disabled={!name.trim()} onPress={() => setStep(1)} />
       </>)}
       {step === 1 && (<>
+        {title("Your birthday", "Riders under 13 use Parent mode only. Your birthday stays on your phone.")}
+        <DatePickerField label="Birthday" value={dob} onChange={setDob} />
+        <Btn primary label="Next" disabled={!dob} onPress={() => (dob && isEligibleRider(dob) ? setStep(2) : setIneligible(true))} />
+      </>)}
+      {step === 2 && (<>
         {title("Your bus")}
         <SelectField label="City" placeholder="City" value={city} options={CITIES}
           onSelect={(v) => { setCity(v); setSchool(""); setOtherSchool(false); const d = defaultDistrictForCity(v); if (d && !district) setDistrict(districtLabel(d)); }} />
@@ -111,25 +125,25 @@ export function Onboarding({ onParent }: { onParent: () => void }) {
         <Input accessibilityLabel="Bus number" placeholder="Bus number" maxLength={8} value={bus} onChangeText={setBus} />
         <Input accessibilityLabel="Student ID number" placeholder="Student ID number" keyboardType="number-pad" maxLength={12} value={studentId} onChangeText={setStudentId} />
         <Text style={{ fontSize: 12, textAlign: "center", color: c.sub }}>Your student ID is used only to find your assigned bus.</Text>
-        <Btn primary label="Next" disabled={!schoolId || !districtOk || !bus.trim() || !isStudentId(studentId)} onPress={() => setStep(2)} />
+        <Btn primary label="Next" disabled={!schoolId || !districtOk || !bus.trim() || !isStudentId(studentId)} onPress={() => setStep(3)} />
       </>)}
-      {step === 2 && (<>
+      {step === 3 && (<>
         {title("Bus times", "We only listen around these times.")}
         <Text style={{ fontSize: 13, fontWeight: "600", textAlign: "center", color: c.sub }}>What time does your bus usually come?</Text>
         <SelectField label="Bus comes (morning)" placeholder="Choose time" value={pickup} options={MORNING_OPTIONS} onSelect={setPickup} />
         <Text style={{ fontSize: 13, fontWeight: "600", textAlign: "center", color: c.sub }}>What time does it usually leave school?</Text>
         <SelectField label="Bus leaves school (afternoon)" placeholder="Choose time" value={leave} options={AFTERNOON_OPTIONS} onSelect={setLeave} />
-        <Btn primary label="Next" disabled={pickupMin === null || leaveMin === null} onPress={() => setStep(3)} />
+        <Btn primary label="Next" disabled={pickupMin === null || leaveMin === null} onPress={() => setStep(4)} />
       </>)}
-      {step === 3 && (<>
+      {step === 4 && (<>
         {title("Allow location")}
         {point("location", "We need your location to find your bus and the bus closest to you.")}
         {point("people", "A bus is only shown when 3+ riders are on it.")}
         {point("heart", "Your location also helps other riders find their bus.")}
         <Btn primary icon="location" label="Allow location" onPress={askLocation} />
-        <Btn label="Not now" onPress={() => setStep(4)} />
+        <Btn label="Not now" onPress={() => setStep(5)} />
       </>)}
-      {step === 4 && (<>
+      {step === 5 && (<>
         {title("Motion sensors", "Motion helps tell a bus from a car. It stays on your phone.")}
         <Btn primary label="Finish setup" onPress={finish} />
       </>)}

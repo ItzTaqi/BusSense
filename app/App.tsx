@@ -2,7 +2,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { Pressable, ScrollView, StatusBar, Text, View } from "react-native";
 import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
-import { Footer } from "./src/components/Footer";
 import { TabBar, type Tab } from "./src/components/TabBar";
 import { ensureAnonSession } from "./src/lib/supabase";
 import { Onboarding } from "./src/screens/Onboarding";
@@ -10,6 +9,7 @@ import { ParentOnboarding } from "./src/screens/ParentOnboarding";
 import { Parent } from "./src/screens/Parent";
 import { RiderHome } from "./src/screens/RiderHome";
 import { Settings, type SettingsPage } from "./src/screens/Settings";
+import { TermsAgreement } from "./src/screens/TermsAgreement";
 import { RoleSelect, Welcome } from "./src/screens/Welcome";
 import { useApp } from "./src/state/store";
 import { useTheme } from "./src/theme";
@@ -35,28 +35,31 @@ export default function App() {
 
 function Shell() {
   const insets = useSafeAreaInsets();
-  const { mode, demo, set, loadChildren, loadAppearance } = useApp();
+  const { mode, demo, set, loadChildren, loadAppearance, loadTerms, termsAccepted, termsChecked, acceptTerms } = useApp();
   const c = useTheme();
   const [tab, setTab] = useState("home");
   const [settingsPage, setSettingsPage] = useState<SettingsPage>("");
-  const [stage, setStage] = useState<"welcome" | "role" | "onboarding" | "parentSetup">("welcome");
+  const [stage, setStage] = useState<"welcome" | "terms" | "role" | "onboarding" | "parentSetup">("welcome");
   const [addingChild, setAddingChild] = useState(false);
-  useEffect(() => { ensureAnonSession().catch(() => {}); void loadAppearance(); void loadChildren().then(() => setTab("board")); }, []);
+  useEffect(() => { ensureAnonSession().catch(() => {}); void loadAppearance(); void loadTerms(); void loadChildren().then(() => setTab("board")); }, []);
 
   const go = (s: string) => {
-    if (s === "receipt" || s === "privacy" || s === "record") { setSettingsPage(s); setTab("settings"); }
+    if (s === "rides" || s === "privacy") { setSettingsPage(s); setTab("settings"); }
     else setTab(s);
   };
   const changeTab = (k: string) => { if (k === "settings") setSettingsPage(""); setTab(k); };
-  const welcome = !mode && (stage === "welcome" || stage === "role");
+  const welcome = !mode && stage === "welcome";
 
   let body: React.ReactNode;
-  if (addingChild) body = <ParentOnboarding adding onCancel={() => setAddingChild(false)} onDone={() => { setAddingChild(false); setTab("board"); }} />;
+  // Someone already set up before agreeing (or the terms changed): ask before showing the app.
+  if (mode && termsChecked && !termsAccepted) body = <TermsAgreement onAgree={acceptTerms} />;
+  else if (addingChild) body = <ParentOnboarding adding onCancel={() => setAddingChild(false)} onDone={() => { setAddingChild(false); setTab("board"); }} />;
   else if (demo) body = <Parent key="demo" tab="board" />;
-  else if (welcome && stage === "welcome") body = <Welcome onStart={() => setStage("role")} />;
-  else if (welcome) body = <RoleSelect onRider={() => setStage("onboarding")} onParent={() => { setStage("parentSetup"); setTab("board"); }} onBack={() => setStage("welcome")} />;
+  else if (welcome) body = <Welcome onStart={() => setStage(termsAccepted ? "role" : "terms")} />;
+  else if (!mode && stage === "terms") body = <TermsAgreement onBack={() => setStage("welcome")} onAgree={() => { acceptTerms(); setStage("role"); }} />;
+  else if (!mode && stage === "role") body = <RoleSelect onRider={() => setStage("onboarding")} onParent={() => { setStage("parentSetup"); setTab("board"); }} onBack={() => setStage("welcome")} />;
   else if (!mode && stage === "parentSetup") body = <ParentOnboarding onCancel={() => setStage("role")} onDone={() => setTab("board")} />;
-  else if (!mode) body = <Onboarding onParent={() => setStage("parentSetup")} />;
+  else if (!mode) body = <Onboarding onParent={() => setStage("parentSetup")} onHome={() => setStage("welcome")} />;
   else if (tab === "settings") body = <Settings page={settingsPage} setPage={setSettingsPage} onAddChild={() => setAddingChild(true)} />;
   else if (mode === "parent") body = <Parent key="real" tab={tab} />;
   else body = <RiderHome go={go} />;
@@ -85,8 +88,8 @@ function Shell() {
         </View>
       )}
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>{body}</ScrollView>
-      {mode && !demo && !addingChild && <TabBar tabs={mode === "rider" ? RIDER_TABS : PARENT_TABS} active={tab} onChange={changeTab} />}
-      <Footer />
+      {mode && !demo && !addingChild && !(termsChecked && !termsAccepted) && <TabBar tabs={mode === "rider" ? RIDER_TABS : PARENT_TABS} active={tab} onChange={changeTab} />}
+      {!(mode && !demo && !addingChild && !(termsChecked && !termsAccepted)) && !welcome && <View style={{ height: insets.bottom, backgroundColor: c.bg }} />}
     </View>
   );
 }

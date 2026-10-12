@@ -5,10 +5,9 @@ import { useApp } from "../state/store";
 import { useTheme } from "../theme";
 import { Privacy } from "./Privacy";
 import { NotificationSettings } from "./NotificationSettings";
-import { Receipt } from "./Receipt";
-import { Record } from "./Record";
+import { PastRides } from "./PastRides";
 
-export type SettingsPage = "" | "privacy" | "receipt" | "record" | "notifications";
+export type SettingsPage = "" | "privacy" | "rides" | "notifications";
 
 // One place for everything that is not the main job: privacy, receipts, recording, language, demo.
 // Rider-only rows (receipt, record) are hidden for parents.
@@ -34,7 +33,7 @@ export function Settings({ page, setPage, onAddChild }: { page: SettingsPage; se
   const Sep = () => <View style={{ height: 1, marginLeft: 74, backgroundColor: c.line }} />;
 
   if (page) {
-    const titles = { privacy: "Privacy and Terms", receipt: "Trip receipt", record: "Record data", notifications: "Notifications" } as const;
+    const titles = { privacy: "Privacy and Terms", rides: "Past rides", notifications: "Notifications" } as const;
     return (
       <View style={{ flex: 1 }}>
         <Pressable accessibilityRole="button" accessibilityLabel="Back to settings" onPress={() => setPage("")}
@@ -45,8 +44,7 @@ export function Settings({ page, setPage, onAddChild }: { page: SettingsPage; se
         </Pressable>
         {page === "notifications" && <NotificationSettings />}
         {page === "privacy" && <Privacy />}
-        {page === "receipt" && <Receipt />}
-        {page === "record" && <Record />}
+        {page === "rides" && <PastRides />}
       </View>
     );
   }
@@ -61,8 +59,7 @@ export function Settings({ page, setPage, onAddChild }: { page: SettingsPage; se
         </>)}
         <Row icon="shield-checkmark" label="Privacy and Terms" hint="How your data is used" onPress={() => setPage("privacy")} />
         {mode === "rider" && (<>
-          <Sep /><Row icon="receipt" label="Trip receipt" hint="Was a bus published? Points kept" onPress={() => setPage("receipt")} />
-          <Sep /><Row icon="recording" label="Record data" hint="Logging build for training" onPress={() => setPage("record")} />
+          <Sep /><Row icon="time" label="Past rides" hint="Your trips and whether the bus was shown" onPress={() => setPage("rides")} />
         </>)}
       </Group>
       {mode === "parent" && (

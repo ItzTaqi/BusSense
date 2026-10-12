@@ -15,7 +15,7 @@ export function Welcome({ onStart }: { onStart: () => void }) {
   if (!loaded) return <LinearGradient colors={[c.heroA, c.heroB]} style={{ flex: 1 }} />; // same background, no font flash
   return (
     <LinearGradient colors={[c.heroA, c.heroB]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
-      <View style={{ flex: 1, padding: 24, paddingTop: 24 + insets.top }}>
+      <View style={{ flex: 1, padding: 24, paddingTop: 24 + insets.top, paddingBottom: 24 + insets.bottom }}>
         <View style={{ flex: 1 }}>
           <View style={{ flex: 1, alignItems: "center", justifyContent: "center", gap: 18 }}>
             <Text accessibilityRole="header" style={{ fontSize: 64, fontFamily: f.x, letterSpacing: -2.5, color: "#FFFFFF" }}>GoNC</Text>
