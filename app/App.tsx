@@ -20,7 +20,6 @@ const RIDER_TABS: Tab[] = [
 ];
 const PARENT_TABS: Tab[] = [
   { key: "board", label: "Today", icon: "home" },
-  { key: "alerts", label: "Alerts", icon: "notifications" },
   { key: "report", label: "Weekly report", icon: "stats-chart" },
   { key: "settings", label: "Settings", icon: "settings" },
 ];

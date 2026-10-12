@@ -4,10 +4,11 @@ import { IconBubble, type IconName } from "../components/Ui";
 import { useApp } from "../state/store";
 import { useTheme } from "../theme";
 import { Privacy } from "./Privacy";
+import { NotificationSettings } from "./NotificationSettings";
 import { Receipt } from "./Receipt";
 import { Record } from "./Record";
 
-export type SettingsPage = "" | "privacy" | "receipt" | "record";
+export type SettingsPage = "" | "privacy" | "receipt" | "record" | "notifications";
 
 // One place for everything that is not the main job: privacy, receipts, recording, language, demo.
 // Rider-only rows (receipt, record) are hidden for parents.
@@ -33,7 +34,7 @@ export function Settings({ page, setPage, onAddChild }: { page: SettingsPage; se
   const Sep = () => <View style={{ height: 1, marginLeft: 74, backgroundColor: c.line }} />;
 
   if (page) {
-    const titles = { privacy: "Privacy and Terms", receipt: "Trip receipt", record: "Record data" } as const;
+    const titles = { privacy: "Privacy and Terms", receipt: "Trip receipt", record: "Record data", notifications: "Notifications" } as const;
     return (
       <View style={{ flex: 1 }}>
         <Pressable accessibilityRole="button" accessibilityLabel="Back to settings" onPress={() => setPage("")}
@@ -42,6 +43,7 @@ export function Settings({ page, setPage, onAddChild }: { page: SettingsPage; se
           <Text style={{ fontSize: 16, fontWeight: "700", color: c.primary }}>Settings</Text>
           <Text accessibilityRole="header" style={{ flex: 1, textAlign: "center", marginRight: 70, fontSize: 16, fontWeight: "700", color: c.ink }}>{titles[page]}</Text>
         </Pressable>
+        {page === "notifications" && <NotificationSettings />}
         {page === "privacy" && <Privacy />}
         {page === "receipt" && <Receipt />}
         {page === "record" && <Record />}
@@ -53,6 +55,10 @@ export function Settings({ page, setPage, onAddChild }: { page: SettingsPage; se
     <ScrollView contentContainerStyle={{ padding: 20, gap: 28 }}>
       <Text accessibilityRole="header" style={{ fontSize: 24, fontWeight: "800", color: c.ink, marginBottom: 2 }}>Settings</Text>
       <Group>
+        {mode === "parent" && (<>
+          <Row icon="notifications" label="Notifications" hint="Alerts, quiet hours" onPress={() => setPage("notifications")} />
+          <Sep />
+        </>)}
         <Row icon="shield-checkmark" label="Privacy and Terms" hint="How your data is used" onPress={() => setPage("privacy")} />
         {mode === "rider" && (<>
           <Sep /><Row icon="receipt" label="Trip receipt" hint="Was a bus published? Points kept" onPress={() => setPage("receipt")} />

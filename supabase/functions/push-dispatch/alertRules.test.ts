@@ -49,3 +49,24 @@ describe("notSeen / passedStop", () => {
     expect(passedStop(500, "RECENT", q).send).toBe(false);
   });
 });
+
+import { alertEnabled, isQuiet } from "./alertRules";
+describe("quiet hours and switches", () => {
+  it("overnight window", () => {
+    expect(isQuiet("22:30", "21:00", "06:30")).toBe(true);
+    expect(isQuiet("02:00", "21:00", "06:30")).toBe(true);
+    expect(isQuiet("07:00", "21:00", "06:30")).toBe(false);
+    expect(isQuiet("20:59", "21:00", "06:30")).toBe(false);
+  });
+  it("same-day window and disabled", () => {
+    expect(isQuiet("13:00", "12:00", "14:00")).toBe(true);
+    expect(isQuiet("15:00", "12:00", "14:00")).toBe(false);
+    expect(isQuiet("03:00", "21:00", "21:00")).toBe(false);
+    expect(isQuiet("03:00", undefined, undefined)).toBe(false);
+  });
+  it("alerts default to on and respect an explicit off", () => {
+    expect(alertEnabled({}, "leave_now")).toBe(true);
+    expect(alertEnabled(null, "leave_now")).toBe(true);
+    expect(alertEnabled({ leave_now: false }, "leave_now")).toBe(false);
+  });
+});

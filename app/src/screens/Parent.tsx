@@ -3,13 +3,12 @@ import { useEffect, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { ReportButtons } from "../components/ReportButtons";
 import { RouteTrack } from "../components/RouteTrack";
-import { Badge, Card, Hero } from "../components/Ui";
+import { Badge, Hero } from "../components/Ui";
 import { DEMO_STEPS } from "../demo/scenario";
 import { StatusRow, subscribeStatus } from "../lib/api";
 import { leaveByMinutes, sourceLabel } from "../lib/leaveBy";
 import { Child, useApp } from "../state/store";
 import { useTheme } from "../theme";
-import { AlertsSettings } from "./AlertsSettings";
 import { WeeklyReport } from "./WeeklyReport";
 
 const DEMO_CHILD: Child = { id: "demo", name: "Demo", city: "Cary", school: "Demo High", districtCode: "67500", bus: "DEMO-12", stop: "demo-3", walkMin: 3 };
@@ -36,7 +35,6 @@ export function Parent({ tab }: { tab: string }) {
   }, [demo, child?.id, child?.bus, child?.stop]);
 
   if (!child) return <View style={{ flex: 1, padding: 24, justifyContent: "center" }}><Text style={{ textAlign: "center", color: c.sub }}>No child added yet. Open Settings to add one.</Text></View>;
-  if (tab === "alerts") return <AlertsSettings route={child.bus} stop={child.stop} />;
   if (tab === "report") return <WeeklyReport route={child.bus} />;
 
   const hasEta = row?.eta_min != null;
@@ -93,9 +91,7 @@ export function Parent({ tab }: { tab: string }) {
         </View>
       )}
 
-      <Card title="Did something go wrong?" icon="megaphone">
-        <ReportButtons route={child.bus} stop={child.stop} />
-      </Card>
+      <ReportButtons route={child.bus} stop={child.stop} />
     </ScrollView>
   );
 }

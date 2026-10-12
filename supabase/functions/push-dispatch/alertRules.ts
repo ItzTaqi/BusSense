@@ -45,3 +45,14 @@ export function passedStop(metersPastStop: number, source: Source, p: Pick<Prefs
   if (blocked(p) || source !== "LIVE" || metersPastStop < 100) return { send: false };
   return { send: true, kind: "passed_stop", text: "The bus has passed your stop." };
 }
+
+/** Quiet hours as "HH:MM" strings; works across midnight (e.g. 21:00 -> 06:30). Start == end means no quiet hours. */
+export function isQuiet(nowHHMM: string, start?: string, end?: string): boolean {
+  if (!start || !end || start === end) return false;
+  return start < end ? nowHHMM >= start && nowHHMM < end : nowHHMM >= start || nowHHMM < end;
+}
+
+/** Per-alert switches saved from the app (all default to on). */
+export function alertEnabled(prefs: Record<string, unknown> | null | undefined, key: string): boolean {
+  return prefs?.[key] !== false;
+}

@@ -35,8 +35,8 @@ Preview the palette: open `design/palette.html`.
 ## Navigation (role-based)
 The first screen picks the role; the app then shows only that role's tabs, with no role switcher.
 - Rider: Ride, Settings.
-- Parent: Today, Alerts, Weekly report, Settings.
-- Settings holds Privacy, Language, Demo, and (riders only) Trip receipt and Record data. The demo is a sample stop board
+- Parent: Today, Weekly report, Settings.
+- Settings holds Notifications (parents: permission, the four alert switches, quiet hours), Privacy and Terms, Language, Demo, and (riders only) Trip receipt and Record data. The demo is a sample stop board
   opened from Settings with an "Exit demo" bar; it never appears on the first screen.
 
 ## Contrast
@@ -54,3 +54,7 @@ Role screen -> six short setup screens (welcome, child nickname, school, distric
 Today = date, "<child>'s bus", status card (source badge, ETA, range, route track), a "Leave in about N min" card, and the report buttons.
 Several children are supported: chips switch the active child; add or remove them in Settings. Children are kept on the parent's phone only
 (SecureStore on a device; localStorage in the browser preview). Child names are nicknames and are never sent to the server.
+
+## Report a problem
+One quiet "Report a problem" button on Today. Tapping it expands into "Bus didn't come" and "Bus came early" (side by side when there is
+room). Sending collapses it back and shows "Thanks, report sent"; each choice locks for 60 s to prevent double reports.
