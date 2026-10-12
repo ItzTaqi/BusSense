@@ -11,9 +11,9 @@ export type SettingsPage = "" | "privacy" | "receipt" | "record";
 
 // One place for everything that is not the main job: privacy, receipts, recording, language, demo.
 // Rider-only rows (receipt, record) are hidden for parents.
-export function Settings({ page, setPage }: { page: SettingsPage; setPage: (p: SettingsPage) => void }) {
+export function Settings({ page, setPage, onAddChild }: { page: SettingsPage; setPage: (p: SettingsPage) => void; onAddChild: () => void }) {
   const c = useTheme();
-  const { mode, lang, demo, set } = useApp();
+  const { mode, lang, demo, set, children, removeChild } = useApp();
 
   const Row = ({ icon, label, hint, onPress, right }: { icon: IconName; label: string; hint?: string; onPress: () => void; right?: string }) => (
     <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress}
@@ -59,6 +59,27 @@ export function Settings({ page, setPage }: { page: SettingsPage; setPage: (p: S
           <Sep /><Row icon="recording" label="Record data" hint="Logging build for training" onPress={() => setPage("record")} />
         </>)}
       </Group>
+      {mode === "parent" && (
+        <Group>
+          {children.map((k, i) => (
+            <View key={k.id}>
+              {i > 0 && <Sep />}
+              <View style={{ minHeight: 56, flexDirection: "row", alignItems: "center", gap: 12, paddingHorizontal: 14 }}>
+                <IconBubble name="person-circle" size={34} />
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontSize: 16, fontWeight: "600", color: c.ink }}>{k.name}</Text>
+                  <Text style={{ fontSize: 13, color: c.sub }}>Bus {k.bus} · {k.stop}</Text>
+                </View>
+                <Pressable accessibilityRole="button" accessibilityLabel={`Remove ${k.name}`} onPress={() => removeChild(k.id)} style={{ padding: 10 }}>
+                  <Ionicons name="trash-outline" size={20} color={c.danger} />
+                </Pressable>
+              </View>
+            </View>
+          ))}
+          {children.length > 0 && <Sep />}
+          <Row icon="add-circle" label="Add a child" onPress={onAddChild} />
+        </Group>
+      )}
       <Group>
         <Row icon="language" label="Language" right={lang === "en" ? "English" : "Español"} onPress={() => set({ lang: lang === "en" ? "es" : "en" })} />
         <Sep />

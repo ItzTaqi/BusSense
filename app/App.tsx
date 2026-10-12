@@ -5,6 +5,7 @@ import { Footer } from "./src/components/Footer";
 import { TabBar, type Tab } from "./src/components/TabBar";
 import { ensureAnonSession } from "./src/lib/supabase";
 import { Onboarding } from "./src/screens/Onboarding";
+import { ParentOnboarding } from "./src/screens/ParentOnboarding";
 import { Parent } from "./src/screens/Parent";
 import { RiderHome } from "./src/screens/RiderHome";
 import { Settings, type SettingsPage } from "./src/screens/Settings";
@@ -18,33 +19,36 @@ const RIDER_TABS: Tab[] = [
   { key: "settings", label: "Settings", icon: "settings" },
 ];
 const PARENT_TABS: Tab[] = [
-  { key: "board", label: "Stop board", icon: "location" },
+  { key: "board", label: "Today", icon: "home" },
   { key: "alerts", label: "Alerts", icon: "notifications" },
   { key: "report", label: "Weekly report", icon: "stats-chart" },
   { key: "settings", label: "Settings", icon: "settings" },
 ];
 
 export default function App() {
-  const { mode, demo, set } = useApp();
+  const { mode, demo, set, loadChildren } = useApp();
   const c = useTheme();
   const [tab, setTab] = useState("home");
   const [settingsPage, setSettingsPage] = useState<SettingsPage>("");
-  const [stage, setStage] = useState<"welcome" | "role" | "onboarding">("welcome");
-  useEffect(() => { ensureAnonSession().catch(() => {}); }, []);
+  const [stage, setStage] = useState<"welcome" | "role" | "onboarding" | "parentSetup">("welcome");
+  const [addingChild, setAddingChild] = useState(false);
+  useEffect(() => { ensureAnonSession().catch(() => {}); void loadChildren().then(() => setTab("board")); }, []);
 
   const go = (s: string) => {
     if (s === "receipt" || s === "privacy" || s === "record") { setSettingsPage(s); setTab("settings"); }
     else setTab(s);
   };
   const changeTab = (k: string) => { if (k === "settings") setSettingsPage(""); setTab(k); };
-  const welcome = !mode && stage !== "onboarding";
+  const welcome = !mode && (stage === "welcome" || stage === "role");
 
   let body: React.ReactNode;
-  if (demo) body = <Parent key="demo" tab="board" />;
+  if (addingChild) body = <ParentOnboarding adding onCancel={() => setAddingChild(false)} onDone={() => { setAddingChild(false); setTab("board"); }} />;
+  else if (demo) body = <Parent key="demo" tab="board" />;
   else if (welcome && stage === "welcome") body = <Welcome onStart={() => setStage("role")} />;
-  else if (welcome) body = <RoleSelect onRider={() => setStage("onboarding")} onParent={() => { set({ mode: "parent" }); setTab("board"); }} onBack={() => setStage("welcome")} />;
-  else if (!mode) body = <Onboarding />;
-  else if (tab === "settings") body = <Settings page={settingsPage} setPage={setSettingsPage} />;
+  else if (welcome) body = <RoleSelect onRider={() => setStage("onboarding")} onParent={() => { setStage("parentSetup"); setTab("board"); }} onBack={() => setStage("welcome")} />;
+  else if (!mode && stage === "parentSetup") body = <ParentOnboarding onCancel={() => setStage("role")} onDone={() => setTab("board")} />;
+  else if (!mode) body = <Onboarding onParent={() => setStage("parentSetup")} />;
+  else if (tab === "settings") body = <Settings page={settingsPage} setPage={setSettingsPage} onAddChild={() => setAddingChild(true)} />;
   else if (mode === "parent") body = <Parent key="real" tab={tab} />;
   else body = <RiderHome go={go} />;
 
@@ -72,7 +76,7 @@ export default function App() {
         </View>
       )}
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>{body}</ScrollView>
-      {mode && !demo && <TabBar tabs={mode === "rider" ? RIDER_TABS : PARENT_TABS} active={tab} onChange={changeTab} />}
+      {mode && !demo && !addingChild && <TabBar tabs={mode === "rider" ? RIDER_TABS : PARENT_TABS} active={tab} onChange={changeTab} />}
       <Footer />
       <SafeAreaView style={{ backgroundColor: c.card }} />
     </View>

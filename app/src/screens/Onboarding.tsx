@@ -16,7 +16,7 @@ import { useTheme } from "../theme";
 
 const TOTAL = 5;
 
-export function Onboarding() {
+export function Onboarding({ onParent }: { onParent: () => void }) {
   const set = useApp((s) => s.set);
   const c = useTheme();
   const [step, setStep] = useState(0);
@@ -77,7 +77,7 @@ export function Onboarding() {
       </View>
       <Text accessibilityRole="header" style={{ fontSize: 22, fontWeight: "700", textAlign: "center", color: c.ink }}>{INELIGIBLE_TITLE}</Text>
       <Text style={{ fontSize: 15, lineHeight: 22, textAlign: "center", color: c.sub }}>{INELIGIBLE_BODY}</Text>
-      <Btn primary icon="people" label="A parent can use Parent mode" onPress={() => set({ mode: "parent", birthYear: null })} />
+      <Btn primary icon="people" label="A parent can use Parent mode" onPress={onParent} />
       <Btn label="Change my birthday" onPress={() => { setIneligible(false); setDob(null); }} />
     </View>
   );
