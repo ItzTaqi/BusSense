@@ -3,6 +3,7 @@ import { create } from "zustand";
 import type { Lang } from "../i18n";
 import { Appearance, isAppearance } from "../lib/appearance";
 import { kvGet, kvSet } from "../lib/kv";
+import { KEYS } from "../lib/localKeys";
 import { TERMS_VERSION, needsAgreement } from "../lib/terms";
 
 export type Mode = "rider" | "parent";
@@ -33,6 +34,7 @@ interface State {
   setAppearance: (a: Appearance) => void;
   loadAppearance: () => Promise<void>;
   acceptTerms: () => void;
+  resetAll: () => void;
   loadTerms: () => Promise<void>;
   addChild: (c: Omit<Child, "id">) => void;
   removeChild: (id: string) => void;
@@ -40,9 +42,9 @@ interface State {
   loadChildren: () => Promise<void>;
 }
 
-const KEY = "gonc.children.v1";
-const APPEARANCE_KEY = "gonc.appearance.v1";
-const TERMS_KEY = "gonc.terms.v1";
+const KEY = KEYS.children;
+const APPEARANCE_KEY = KEYS.appearance;
+const TERMS_KEY = KEYS.terms;
 
 export const useApp = create<State>((set, get) => {
   const save = () => { void kvSet(KEY, JSON.stringify(get().children)); };
@@ -62,6 +64,7 @@ export const useApp = create<State>((set, get) => {
       save();
     },
     setActiveChild: (i) => set({ activeChild: i }),
+    resetAll: () => set({ mode: null, children: [], activeChild: 0, riderName: "", declaredBus: "", tripToken: null, tripStartedAt: null, riderStatus: "sleeping", kRiders: 0, birthYear: null, demo: false, appearance: "system", termsAccepted: false }),
     acceptTerms: () => { set({ termsAccepted: true }); void kvSet(TERMS_KEY, TERMS_VERSION); },
     loadTerms: async () => { set({ termsAccepted: !needsAgreement(await kvGet(TERMS_KEY)), termsChecked: true }); },
     setAppearance: (a) => { set({ appearance: a }); void kvSet(APPEARANCE_KEY, a); },

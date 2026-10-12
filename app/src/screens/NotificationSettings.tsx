@@ -4,6 +4,7 @@ import { Switch, Text, View } from "react-native";
 import { SelectField } from "../components/SelectField";
 import { Btn } from "../components/Ui";
 import { kvGet, kvSet } from "../lib/kv";
+import { KEYS } from "../lib/localKeys";
 import { supabase } from "../lib/supabase";
 import { label, parseLabel, timeOptions, toHHMM } from "../lib/times";
 import { useApp } from "../state/store";
@@ -17,7 +18,7 @@ const ITEMS = [
 ] as const;
 const QUIET_FROM = timeOptions(18 * 60, 23 * 60 + 30);   // 6:00 PM - 11:30 PM
 const QUIET_TO = timeOptions(4 * 60, 9 * 60);            // 4:00 AM - 9:00 AM
-const KEY = "gonc.alertprefs.v1";
+const KEY = KEYS.alertPrefs;
 type Prefs = Record<string, boolean | string>;
 const DEFAULTS: Prefs = { leave_now: true, running_late: true, not_seen: true, passed: true, quiet_start: "21:00", quiet_end: "06:30" };
 

@@ -1,22 +1,18 @@
-import { Alert, View } from "react-native";
-import { Btn } from "../components/Ui";
+import { useState } from "react";
+import { View } from "react-native";
+import { DeleteAccountModal } from "../components/DeleteAccountModal";
 import { TermsContent } from "../components/TermsContent";
-import { deleteAccount } from "../lib/api";
-import { supabase } from "../lib/supabase";
-import { useApp } from "../state/store";
+import { Btn } from "../components/Ui";
 
 export function Privacy() {
-  const set = useApp((s) => s.set);
-  const del = () => Alert.alert("Delete account?", "This removes your profile and student ID. Trip points are already anonymous.", [
-    { text: "Cancel", style: "cancel" },
-    { text: "Delete", style: "destructive", onPress: async () => { await deleteAccount(); await supabase.auth.signOut(); set({ mode: null }); } },
-  ]);
+  const [confirming, setConfirming] = useState(false);
   return (
     <View style={{ padding: 22, gap: 24 }}>
       <TermsContent />
       <View style={{ gap: 10, paddingTop: 8 }}>
-        <Btn danger icon="trash" label="Delete my account" onPress={del} />
+        <Btn danger icon="trash" label="Delete my account" onPress={() => setConfirming(true)} />
       </View>
+      <DeleteAccountModal visible={confirming} onClose={() => setConfirming(false)} />
     </View>
   );
 }

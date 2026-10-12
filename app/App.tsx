@@ -48,6 +48,8 @@ function Shell() {
     else setTab(s);
   };
   const changeTab = (k: string) => { if (k === "settings") setSettingsPage(""); setTab(k); };
+  // After an account is deleted (mode back to null), start again from the home page.
+  useEffect(() => { if (!mode) { setStage("welcome"); setTab("home"); setSettingsPage(""); } }, [mode]);
   const welcome = !mode && stage === "welcome";
 
   let body: React.ReactNode;

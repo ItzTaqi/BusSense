@@ -1,7 +1,9 @@
 import { kvGet, kvSet } from "./kv";
 import { Ride, addRide } from "./rides";
 
-const KEY = "gonc.rides.v1";
+import { KEYS } from "./localKeys";
+
+const KEY = KEYS.rides;
 
 export async function loadRides(): Promise<Ride[]> {
   const raw = await kvGet(KEY);

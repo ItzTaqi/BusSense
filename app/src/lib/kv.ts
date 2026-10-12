@@ -8,6 +8,12 @@ export async function kvGet(key: string): Promise<string | null> {
     return await SecureStore.getItemAsync(key);
   } catch { return null; }
 }
+export async function kvRemove(key: string): Promise<void> {
+  try {
+    if (Platform.OS === "web") globalThis.localStorage?.removeItem(key);
+    else await SecureStore.deleteItemAsync(key);
+  } catch { /* nothing to remove */ }
+}
 export async function kvSet(key: string, value: string): Promise<void> {
   try {
     if (Platform.OS === "web") globalThis.localStorage?.setItem(key, value);

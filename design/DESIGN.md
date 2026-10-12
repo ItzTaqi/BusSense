@@ -71,3 +71,10 @@ Anyone already set up who has not agreed is asked before the app opens.
 ## Rider setup
 Name or nickname (stays on the phone) -> birthday -> bus -> bus times -> location -> motion. Every step has a back arrow; on the first step it
 returns to the home page. The rider home mirrors the parent's Today: date and "<name>'s bus".
+
+## Delete account
+Settings > Privacy and Terms > "Delete my account" opens an in-app confirmation (system alerts do not show in the browser preview): what will be
+deleted, what stays (location points are not linked to the account; anonymous reports and timing data), and what to know first. The red
+"Delete everything" button stays off until "I understand this cannot be undone" is ticked. The server is asked first (`delete-account` function);
+only when it confirms are the profile's local copies erased (all `gonc.*` keys, listed in `app/src/lib/localKeys.ts`) and the app returns to the
+home page. If the server can't be reached, nothing is deleted and the button becomes "Try again".
