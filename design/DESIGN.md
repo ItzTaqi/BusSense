@@ -17,17 +17,17 @@ Source of truth in code: `app/src/theme.ts` and `app/src/components/Ui.tsx`.
 ## Rules
 1. **Status is never color alone.** Source badge = icon + text + fill style:
    LIVE solid fill + pulsing dot, RECENT outline + clock, ESTIMATE dashed outline + analytics icon, NO DATA faint fill + help icon.
-2. **Touch targets** at least 56 pt (buttons) and 52 pt (tabs). Body text 18 pt, scales with system text size.
+2. **Touch targets** at least 48 pt (fields, buttons, tabs). Body text 16 pt, scales with system text size.
 3. **Motion:** one pulse (LIVE dot), off when the system "Reduce Motion" setting is on.
 4. **Layout:** all text, titles, cards and heroes are center-aligned. Form rows in Alerts keep label left, switch right.
 5. **Footer** "Community supplement – not the official WCPSS tracker." on every screen except the minimal home page.
 6. **Dark mode** follows the phone setting.
 
 ## Type scale
-hero 72 (ETA) · title 28 · body 18 · label 16 · tab 12.
+hero 56 (ETA) · title 22 · body 16 · label 13 · tab 11.
 
 ## Components
-Screen, Hero, Card (icon + title), Btn (primary solid / outline / danger), Badge, PulseDot, IconBubble,
+Screen, Hero, Card (icon + title), Input (soft filled field, blue focus ring), Btn (primary solid blue / soft / danger), Badge, PulseDot, IconBubble,
 ProgressBar, RouteTrack (bus, stops, home), TabBar. Icons: Ionicons (`@expo/vector-icons`).
 
 Preview the palette: open `design/palette.html`.

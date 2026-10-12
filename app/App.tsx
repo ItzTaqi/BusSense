@@ -46,10 +46,10 @@ export default function App() {
   }
   const pill = (label: string, icon: keyof typeof Ionicons.glyphMap, on: boolean, onPress: () => void, hint?: string) => (
     <Pressable accessibilityRole="button" accessibilityLabel={hint ?? label} accessibilityState={{ selected: on }} onPress={onPress}
-      style={{ flexDirection: "row", alignItems: "center", gap: 6, minHeight: 40, paddingHorizontal: 12, borderRadius: 999,
+      style={{ flexDirection: "row", alignItems: "center", gap: 6, minHeight: 34, paddingHorizontal: 12, borderRadius: 999,
         backgroundColor: on ? "#FFFFFF" : "rgba(255,255,255,0.14)" }}>
-      <Ionicons name={icon} size={18} color={on ? "#0B3FBF" : "#fff"} />
-      <Text style={{ fontSize: 15, fontWeight: "800", color: on ? "#0B3FBF" : "#fff" }}>{label}</Text>
+      <Ionicons name={icon} size={16} color={on ? "#0B3FBF" : "#fff"} />
+      <Text style={{ fontSize: 13, fontWeight: "600", color: on ? "#0B3FBF" : "#fff" }}>{label}</Text>
     </Pressable>
   );
   return (
@@ -57,12 +57,12 @@ export default function App() {
       <StatusBar barStyle="light-content" />
       {welcome ? <SafeAreaView /> : <LinearGradient colors={[c.heroA, c.heroB]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
         <SafeAreaView>
-          <View style={{ paddingHorizontal: 16, paddingTop: 6, paddingBottom: 12, gap: 10 }}>
+          <View style={{ paddingHorizontal: 16, paddingTop: 4, paddingBottom: 10, gap: 8 }}>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10 }}>
-              <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: "#FFFFFF", alignItems: "center", justifyContent: "center" }}>
-                <Ionicons name="bus" size={24} color="#0B3FBF" />
+              <View style={{ width: 32, height: 32, borderRadius: 10, backgroundColor: "#FFFFFF", alignItems: "center", justifyContent: "center" }}>
+                <Ionicons name="bus" size={19} color="#0B3FBF" />
               </View>
-              <Text accessibilityRole="header" style={{ fontSize: 26, fontWeight: "900", color: "#fff", letterSpacing: -0.5 }}>GoYellow</Text>
+              <Text accessibilityRole="header" style={{ fontSize: 20, fontWeight: "700", color: "#fff", letterSpacing: -0.3 }}>GoYellow</Text>
             </View>
             {mode && (
               <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap", justifyContent: "center" }}>

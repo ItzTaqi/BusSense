@@ -18,8 +18,8 @@ export type Theme = typeof light;
 export const useTheme = (): Theme => (useColorScheme() === "dark" ? dark : light);
 
 export const space = { xs: 6, sm: 10, md: 16, lg: 24, xl: 32 };
-export const type = { body: 18, label: 16, title: 28, hero: 72 };
-export const radius = 20;
+export const type = { body: 16, label: 13, title: 22, hero: 56 };
+export const radius = 16;
 
 // Heroes are always dark, so their content is always white.
 export const onHero = { fg: "#FFFFFF", dim: "rgba(255,255,255,0.78)", faint: "rgba(255,255,255,0.22)" };

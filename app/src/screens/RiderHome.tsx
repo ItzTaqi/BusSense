@@ -20,7 +20,7 @@ export function RiderHome({ go }: { go: (s: string) => void }) {
       <Hero icon={listening ? "radio" : "moon"}>
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10 }}>
           {listening && <PulseDot color="#FFFFFF" />}
-          <Text accessibilityRole="header" style={{ fontSize: 34, fontWeight: "900", color: "#fff", letterSpacing: -1, textAlign: "center" }}>{label}</Text>
+          <Text accessibilityRole="header" style={{ fontSize: 26, fontWeight: "700", color: "#fff", letterSpacing: -0.6, textAlign: "center" }}>{label}</Text>
         </View>
         <P color="rgba(255,255,255,0.85)">A bus is shown to parents only when 3 or more riders are on it. Never you.</P>
         {riderStatus === "onBus" && <Badge text="LIVE" />}

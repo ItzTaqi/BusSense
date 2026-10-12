@@ -14,12 +14,12 @@ export function RouteTrack({ stopsAway }: { stopsAway: number | null }) {
           return (
             <View key={i} style={{ flexDirection: "row", alignItems: "center", flex: last ? undefined : 1, flexShrink: last ? 0 : 1 }}>
               {i === 0 ? (
-                <View style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: onHero.fg, alignItems: "center", justifyContent: "center" }}>
-                  <Ionicons name="bus" size={20} color="#0B3FBF" />
+                <View style={{ width: 30, height: 30, borderRadius: 15, backgroundColor: onHero.fg, alignItems: "center", justifyContent: "center" }}>
+                  <Ionicons name="bus" size={17} color="#0B3FBF" />
                 </View>
               ) : last ? (
-                <View style={{ width: 36, height: 36, borderRadius: 18, borderWidth: 2, borderColor: onHero.fg, alignItems: "center", justifyContent: "center" }}>
-                  <Ionicons name="home" size={18} color={onHero.fg} />
+                <View style={{ width: 30, height: 30, borderRadius: 15, borderWidth: 2, borderColor: onHero.fg, alignItems: "center", justifyContent: "center" }}>
+                  <Ionicons name="home" size={15} color={onHero.fg} />
                 </View>
               ) : (
                 <View style={{ width: 12, height: 12, borderRadius: 6, backgroundColor: onHero.dim }} />

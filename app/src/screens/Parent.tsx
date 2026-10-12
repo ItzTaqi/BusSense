@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Alert, Text, TextInput } from "react-native";
-import { Badge, Btn, Card, H, Hero, P, Screen } from "../components/Ui";
+import { Alert, Text } from "react-native";
+import { Badge, Btn, Card, H, Hero, Input, P, Screen } from "../components/Ui";
 import { RouteTrack } from "../components/RouteTrack";
 import { sendReport, subscribeStatus, StatusRow } from "../lib/api";
 import { SelectField } from "../components/SelectField";
@@ -48,9 +48,9 @@ export function Parent({ tab }: { tab: string }) {
     <Screen>
       <H>Set up your stop</H>
       <SelectField label="District" value={district} options={DISTRICTS.map(districtLabel)} onSelect={setDistrict} />
-      <TextInput accessibilityLabel="Bus number" placeholder="Bus number" placeholderTextColor={c.sub} style={field} value={route} onChangeText={setRoute} maxLength={8} />
-      <TextInput accessibilityLabel="Stop" placeholder="Stop" placeholderTextColor={c.sub} style={field} value={stop} onChangeText={setStop} />
-      <TextInput accessibilityLabel="Walking minutes" placeholder="Walking minutes" placeholderTextColor={c.sub} keyboardType="number-pad" style={field} value={walk} onChangeText={setWalk} />
+      <Input accessibilityLabel="Bus number" placeholder="Bus number" value={route} onChangeText={setRoute} maxLength={8} />
+      <Input accessibilityLabel="Stop" placeholder="Stop" value={stop} onChangeText={setStop} />
+      <Input accessibilityLabel="Walking minutes" placeholder="Walking minutes" keyboardType="number-pad" value={walk} onChangeText={setWalk} />
       <Btn primary label="Save" disabled={!route || !stop} onPress={save} />
     </Screen>
   );
@@ -68,7 +68,7 @@ export function Parent({ tab }: { tab: string }) {
         {hasEta ? (
           <>
             <Text accessibilityLabel={`Arrives in about ${row!.eta_min} minutes`}
-              style={{ fontSize: type.hero, fontWeight: "900", color: "#fff", letterSpacing: -2, lineHeight: 80, textAlign: "center" }}>
+              style={{ fontSize: type.hero, fontWeight: "700", color: "#fff", letterSpacing: -2, lineHeight: 62, textAlign: "center" }}>
               {row!.eta_min}<Text style={{ fontSize: type.title, letterSpacing: 0 }}> min</Text>
             </Text>
             <P color="rgba(255,255,255,0.9)">Likely between {row!.eta_lo} and {row!.eta_hi} min</P>

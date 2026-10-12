@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FlatList, Modal, Pressable, SafeAreaView, Text, View } from "react-native";
 import { MONTHS, YMD, daysInMonth, firstWeekday, formatMDY, isFuture } from "../lib/dates";
 import { radius, useTheme } from "../theme";
+import { fieldBox } from "./Ui";
 
 // Pop-out calendar for birthdays: tap the field, tap the year to jump, tap a day.
 export function DatePickerField({ label, value, onChange }: { label: string; value: YMD | null; onChange: (v: YMD) => void }) {
@@ -26,10 +27,9 @@ export function DatePickerField({ label, value, onChange }: { label: string; val
     <>
       <Pressable accessibilityRole="button" accessibilityLabel={`${label}: ${value ? formatMDY(value) : "not chosen"}. Opens calendar`}
         onPress={() => setOpen(true)}
-        style={{ minHeight: 52, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10, paddingHorizontal: 14,
-          borderRadius: radius - 6, borderWidth: 1.5, borderColor: c.line, backgroundColor: c.card }}>
-        <Ionicons name="calendar" size={20} color={c.primary} />
-        <Text style={{ fontSize: 19, fontWeight: "700", color: value ? c.ink : c.sub }}>{value ? formatMDY(value) : "MM/DD/YYYY"}</Text>
+        style={[fieldBox(c, open), { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10 }]}>
+        <Ionicons name="calendar" size={18} color={c.primary} />
+        <Text style={{ fontSize: 17, fontWeight: "600", color: value ? c.ink : c.sub }}>{value ? formatMDY(value) : "MM/DD/YYYY"}</Text>
       </Pressable>
       <Modal visible={open} animationType="fade" transparent onRequestClose={() => setOpen(false)}>
         <Pressable accessibilityLabel="Close calendar" onPress={() => setOpen(false)}
@@ -42,7 +42,7 @@ export function DatePickerField({ label, value, onChange }: { label: string; val
                 </Pressable>
                 <Pressable accessibilityRole="button" accessibilityLabel={`${MONTHS[vm]} ${vy}. Choose year`} onPress={() => setYearMode(!yearMode)}
                   style={{ flexDirection: "row", alignItems: "center", gap: 6, padding: 8 }}>
-                  <Text style={{ fontSize: 20, fontWeight: "800", color: c.ink }}>{MONTHS[vm]} {vy}</Text>
+                  <Text style={{ fontSize: 17, fontWeight: "700", color: c.ink }}>{MONTHS[vm]} {vy}</Text>
                   <Ionicons name={yearMode ? "chevron-up" : "chevron-down"} size={18} color={c.primary} />
                 </Pressable>
                 <Pressable accessibilityRole="button" accessibilityLabel="Next month" disabled={yearMode || nextDisabled} onPress={() => shift(1)} style={{ padding: 10, opacity: yearMode || nextDisabled ? 0.2 : 1 }}>
@@ -50,19 +50,19 @@ export function DatePickerField({ label, value, onChange }: { label: string; val
                 </Pressable>
               </View>
               {yearMode ? (
-                <FlatList data={years} numColumns={4} keyExtractor={(y) => String(y)} style={{ maxHeight: 320 }} initialScrollIndex={Math.max(0, now.getFullYear() - vy - 4)}
-                  getItemLayout={(_, i) => ({ length: 52, offset: 52 * Math.floor(i / 4), index: i })}
+                <FlatList data={years} numColumns={4} keyExtractor={(y) => String(y)} style={{ maxHeight: 320 }} initialScrollIndex={Math.max(0, Math.floor((now.getFullYear() - vy) / 4) - 1)} // numColumns: index counts ROWS
+                  getItemLayout={(_, row) => ({ length: 52, offset: 52 * row, index: row })}
                   renderItem={({ item }) => (
                     <Pressable accessibilityRole="button" accessibilityLabel={String(item)} onPress={() => { setVy(item); setYearMode(false); }}
                       style={{ flex: 1, height: 48, margin: 2, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: item === vy ? c.brand : "transparent" }}>
-                      <Text style={{ fontSize: 17, fontWeight: "700", color: item === vy ? c.onBrand : c.ink }}>{item}</Text>
+                      <Text style={{ fontSize: 15, fontWeight: "600", color: item === vy ? c.onBrand : c.ink }}>{item}</Text>
                     </Pressable>
                   )} />
               ) : (
                 <View>
                   <View style={{ flexDirection: "row" }}>
                     {["S", "M", "T", "W", "T", "F", "S"].map((d, i) => (
-                      <Text key={i} style={{ width: `${100 / 7}%`, textAlign: "center", fontSize: 14, fontWeight: "700", color: c.sub, paddingVertical: 6 }}>{d}</Text>
+                      <Text key={i} style={{ width: `${100 / 7}%`, textAlign: "center", fontSize: 12, fontWeight: "600", color: c.sub, paddingVertical: 6 }}>{d}</Text>
                     ))}
                   </View>
                   <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
@@ -74,8 +74,8 @@ export function DatePickerField({ label, value, onChange }: { label: string; val
                           {d !== null && (
                             <Pressable accessibilityRole="button" accessibilityLabel={`${MONTHS[vm]} ${d}, ${vy}`} accessibilityState={{ selected: sel, disabled: future }}
                               disabled={future} onPress={() => { onChange({ y: vy, m: vm + 1, d }); setOpen(false); }}
-                              style={{ width: 42, height: 42, borderRadius: 21, alignItems: "center", justifyContent: "center", backgroundColor: sel ? c.brand : "transparent", opacity: future ? 0.25 : 1 }}>
-                              <Text style={{ fontSize: 17, fontWeight: sel ? "800" : "500", color: sel ? c.onBrand : c.ink }}>{d}</Text>
+                              style={{ width: 38, height: 38, borderRadius: 19, alignItems: "center", justifyContent: "center", backgroundColor: sel ? c.brand : "transparent", opacity: future ? 0.25 : 1 }}>
+                              <Text style={{ fontSize: 15, fontWeight: sel ? "700" : "400", color: sel ? c.onBrand : c.ink }}>{d}</Text>
                             </Pressable>
                           )}
                         </View>

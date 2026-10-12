@@ -8,14 +8,14 @@ export function Welcome({ onRider, onParent, onDemo }: { onRider: () => void; on
   const c = useTheme();
   return (
     <View style={{ flex: 1, padding: 28, justifyContent: "space-between", alignItems: "stretch" }}>
-      <View style={{ gap: 24, marginTop: 56, alignItems: "center" }}>
-        <View accessible={false} style={{ width: 80, height: 80, borderRadius: 24, backgroundColor: c.brand, alignItems: "center", justifyContent: "center" }}>
-          <Ionicons name="bus" size={44} color={c.onBrand} />
+      <View style={{ gap: 18, marginTop: 48, alignItems: "center" }}>
+        <View accessible={false} style={{ width: 64, height: 64, borderRadius: 20, backgroundColor: c.brand, alignItems: "center", justifyContent: "center" }}>
+          <Ionicons name="bus" size={34} color={c.onBrand} />
         </View>
-        <Text accessibilityRole="header" style={{ fontSize: 48, fontWeight: "900", letterSpacing: -2, lineHeight: 52, textAlign: "center", color: c.ink }}>
+        <Text accessibilityRole="header" style={{ fontSize: 36, fontWeight: "700", letterSpacing: -1.2, lineHeight: 40, textAlign: "center", color: c.ink }}>
           Where&apos;s the bus?
         </Text>
-        <Text style={{ fontSize: 20, lineHeight: 28, textAlign: "center", color: c.sub }}>
+        <Text style={{ fontSize: 16, lineHeight: 24, textAlign: "center", color: c.sub }}>
           Families see the real bus, even on substitute days. No device on the bus. No one tracked.
         </Text>
       </View>
@@ -24,9 +24,9 @@ export function Welcome({ onRider, onParent, onDemo }: { onRider: () => void; on
         <Btn icon="people" label="I'm a parent" onPress={onParent} />
         <Pressable accessibilityRole="button" accessibilityLabel="Try the demo" onPress={onDemo}
           style={{ minHeight: 48, alignItems: "center", justifyContent: "center", borderRadius: radius }}>
-          <Text style={{ fontSize: 17, fontWeight: "700", textDecorationLine: "underline", color: c.ink }}>Try the demo</Text>
+          <Text style={{ fontSize: 15, fontWeight: "600", color: c.primary }}>Try the demo</Text>
         </Pressable>
-        <Text style={{ fontSize: 14, textAlign: "center", color: c.sub }}>A bus is shown only when 3+ riders are on it.</Text>
+        <Text style={{ fontSize: 12, textAlign: "center", color: c.sub }}>A bus is shown only when 3+ riders are on it.</Text>
       </View>
     </View>
   );

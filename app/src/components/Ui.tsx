@@ -1,30 +1,30 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { ReactNode, useEffect, useRef, useState } from "react";
-import { AccessibilityInfo, Animated, Pressable, Text, View } from "react-native";
-import { radius, sourceStyle, space, type, useTheme } from "../theme";
+import { AccessibilityInfo, Animated, Platform, Pressable, Text, TextInput, TextInputProps, View } from "react-native";
+import { radius, sourceStyle, space, type, useTheme, Theme } from "../theme";
 
 export type IconName = keyof typeof Ionicons.glyphMap;
 
 export const Screen = ({ children }: { children: ReactNode }) => (
-  <View style={{ flex: 1, padding: space.md, gap: space.md, alignItems: "stretch" }}>{children}</View>
+  <View style={{ flex: 1, padding: space.md, gap: 14, alignItems: "stretch" }}>{children}</View>
 );
 
 export const H = ({ children, color }: { children: ReactNode; color?: string }) => {
   const c = useTheme();
-  return <Text accessibilityRole="header" style={{ fontSize: type.title, fontWeight: "900", letterSpacing: -0.5, textAlign: "center", color: color ?? c.ink }}>{children}</Text>;
+  return <Text accessibilityRole="header" style={{ fontSize: type.title, fontWeight: "700", letterSpacing: -0.4, textAlign: "center", color: color ?? c.ink }}>{children}</Text>;
 };
 
 export const P = ({ children, dim, color }: { children: ReactNode; dim?: boolean; color?: string }) => {
   const c = useTheme();
-  return <Text style={{ fontSize: type.body, lineHeight: 26, textAlign: "center", color: color ?? (dim ? c.sub : c.ink) }}>{children}</Text>;
+  return <Text style={{ fontSize: type.body, lineHeight: 22, textAlign: "center", color: color ?? (dim ? c.sub : c.ink) }}>{children}</Text>;
 };
 
-export const IconBubble = ({ name, color, bg, size = 44 }: { name: IconName; color?: string; bg?: string; size?: number }) => {
+export const IconBubble = ({ name, color, bg, size = 36 }: { name: IconName; color?: string; bg?: string; size?: number }) => {
   const c = useTheme();
   return (
     <View accessible={false} style={{ width: size, height: size, borderRadius: size / 2, backgroundColor: bg ?? c.cardAlt, alignItems: "center", justifyContent: "center" }}>
-      <Ionicons name={name} size={size * 0.52} color={color ?? c.ink} />
+      <Ionicons name={name} size={size * 0.52} color={color ?? c.primary} />
     </View>
   );
 };
@@ -34,12 +34,13 @@ export const Card = ({ children, tone, icon, title }: { children?: ReactNode; to
   const bg = tone === "brand" ? c.brand : tone === "alt" ? c.cardAlt : c.card;
   const fg = tone === "brand" ? c.onBrand : c.ink;
   return (
-    <View style={{ backgroundColor: bg, borderRadius: radius, padding: space.md, gap: space.sm, alignItems: "stretch", borderWidth: 1, borderColor: c.line,
-      shadowColor: c.shadow, shadowOpacity: c.mode === "dark" ? 0.4 : 0.12, shadowRadius: 14, shadowOffset: { width: 0, height: 6 }, elevation: 3 }}>
+    <View style={{ backgroundColor: bg, borderRadius: radius + 2, padding: space.md, gap: space.sm, alignItems: "stretch",
+      borderWidth: tone ? 0 : 1, borderColor: c.line,
+      shadowColor: c.shadow, shadowOpacity: c.mode === "dark" ? 0.3 : 0.07, shadowRadius: 18, shadowOffset: { width: 0, height: 8 }, elevation: 2 }}>
       {(icon || title) && (
-        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: space.sm }}>
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8 }}>
           {icon && <IconBubble name={icon} />}
-          {title && <Text accessibilityRole="header" style={{ fontSize: type.body + 1, fontWeight: "800", textAlign: "center", color: fg }}>{title}</Text>}
+          {title && <Text accessibilityRole="header" style={{ fontSize: type.body, fontWeight: "700", textAlign: "center", color: fg }}>{title}</Text>}
         </View>
       )}
       {children}
@@ -47,21 +48,33 @@ export const Card = ({ children, tone, icon, title }: { children?: ReactNode; to
   );
 };
 
+// Shared look for every text field: soft filled box, no hard outline, blue ring while focused.
+export const fieldBox = (c: Theme, focused = false, disabled = false) => ({
+  minHeight: 48, borderRadius: radius - 2, paddingHorizontal: 16, fontSize: type.body, color: c.ink,
+  backgroundColor: c.cardAlt, borderWidth: 1.5, borderColor: focused ? c.primary : "transparent", opacity: disabled ? 0.5 : 1,
+});
+
+export const Input = (props: TextInputProps) => {
+  const c = useTheme();
+  const [focused, setFocused] = useState(false);
+  return (
+    <TextInput placeholderTextColor={c.sub} {...props}
+      onFocus={(e) => { setFocused(true); props.onFocus?.(e); }} onBlur={(e) => { setFocused(false); props.onBlur?.(e); }}
+      style={[fieldBox(c, focused), { textAlign: "center" }, Platform.OS === "web" ? ({ outlineStyle: "none" } as object) : null, props.style]} />
+  );
+};
+
 export const Btn = ({ label, onPress, danger, disabled, primary, icon }: {
   label: string; onPress: () => void; danger?: boolean; disabled?: boolean; primary?: boolean; icon?: IconName }) => {
   const c = useTheme();
   const fg = primary ? c.onBrand : danger ? c.danger : c.ink;
-  const inner = (
-    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10, minHeight: 58, paddingHorizontal: space.md }}>
-      {icon && <Ionicons name={icon} size={24} color={fg} />}
-      <Text style={{ fontSize: type.body + 2, fontWeight: "800", color: fg }}>{label}</Text>
-    </View>
-  );
   return (
     <Pressable accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ disabled: !!disabled }} disabled={disabled} onPress={onPress}
-      style={({ pressed }) => ({ borderRadius: radius, overflow: "hidden", opacity: disabled ? 0.4 : 1, transform: [{ scale: pressed ? 0.97 : 1 }],
-        borderWidth: 2, borderColor: primary ? c.brand : danger ? c.danger : c.ink, backgroundColor: primary ? c.brand : c.card })}>
-      {inner}
+      style={({ pressed }) => ({ minHeight: 50, borderRadius: radius - 2, paddingHorizontal: space.md, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8,
+        backgroundColor: primary ? c.brand : c.cardAlt, opacity: disabled ? 0.4 : 1, transform: [{ scale: pressed ? 0.98 : 1 }],
+        shadowColor: c.brand, shadowOpacity: primary && !disabled ? 0.25 : 0, shadowRadius: 12, shadowOffset: { width: 0, height: 6 } })}>
+      {icon && <Ionicons name={icon} size={20} color={fg} />}
+      <Text style={{ fontSize: type.body, fontWeight: "600", color: fg }}>{label}</Text>
     </Pressable>
   );
 };
@@ -78,23 +91,23 @@ export const PulseDot = ({ color }: { color: string }) => {
     return () => loop.stop();
   }, [reduce, v]);
   return (
-    <View accessible={false} style={{ width: 16, height: 16, alignItems: "center", justifyContent: "center" }}>
-      {!reduce && <Animated.View style={{ position: "absolute", width: 16, height: 16, borderRadius: 8, backgroundColor: color,
-        opacity: v.interpolate({ inputRange: [0, 1], outputRange: [0.6, 0] }), transform: [{ scale: v.interpolate({ inputRange: [0, 1], outputRange: [1, 2.6] }) }] }} />}
-      <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: color }} />
+    <View accessible={false} style={{ width: 14, height: 14, alignItems: "center", justifyContent: "center" }}>
+      {!reduce && <Animated.View style={{ position: "absolute", width: 14, height: 14, borderRadius: 7, backgroundColor: color,
+        opacity: v.interpolate({ inputRange: [0, 1], outputRange: [0.6, 0] }), transform: [{ scale: v.interpolate({ inputRange: [0, 1], outputRange: [1, 2.4] }) }] }} />}
+      <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: color }} />
     </View>
   );
 };
 
-// Source badge: icon + TEXT + fill style (solid / outline / dashed / faint). Never hue.
+// Source badge: icon + TEXT + fill style (solid / outline / dashed / faint). Never hue alone.
 export const Badge = ({ text, onDark = true }: { text: string; onDark?: boolean }) => {
   const s = sourceStyle(text, onDark);
   return (
     <View accessible accessibilityLabel={`Data source: ${text}`}
-      style={{ flexDirection: "row", alignItems: "center", gap: 8, alignSelf: "center", paddingVertical: 8, paddingHorizontal: 14, borderRadius: 999,
-        backgroundColor: s.bg, borderWidth: 2, borderColor: s.border, borderStyle: s.dash ? "dashed" : "solid" }}>
-      {text === "LIVE" ? <PulseDot color={s.fg} /> : <Ionicons name={s.icon} size={18} color={s.fg} />}
-      <Text style={{ fontSize: type.label, fontWeight: "900", letterSpacing: 1, color: s.fg }}>{text}</Text>
+      style={{ flexDirection: "row", alignItems: "center", gap: 6, alignSelf: "center", paddingVertical: 6, paddingHorizontal: 12, borderRadius: 999,
+        backgroundColor: s.bg, borderWidth: 1.5, borderColor: s.border, borderStyle: s.dash ? "dashed" : "solid" }}>
+      {text === "LIVE" ? <PulseDot color={s.fg} /> : <Ionicons name={s.icon} size={15} color={s.fg} />}
+      <Text style={{ fontSize: type.label, fontWeight: "700", letterSpacing: 0.8, color: s.fg }}>{text}</Text>
     </View>
   );
 };
@@ -103,8 +116,8 @@ export const Hero = ({ children, icon }: { children: ReactNode; icon?: IconName 
   const c = useTheme();
   return (
     <LinearGradient colors={[c.heroA, c.heroB]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-      style={{ borderRadius: radius + 8, padding: space.lg, gap: space.sm, overflow: "hidden", alignItems: "center" }}>
-      {icon && <Ionicons name={icon} size={150} color="rgba(255,255,255,0.07)" style={{ position: "absolute", right: -20, top: -10 }} />}
+      style={{ borderRadius: radius + 10, padding: space.lg, gap: space.sm, overflow: "hidden", alignItems: "center" }}>
+      {icon && <Ionicons name={icon} size={130} color="rgba(255,255,255,0.07)" style={{ position: "absolute", right: -16, top: -8 }} />}
       {children}
     </LinearGradient>
   );
@@ -115,7 +128,7 @@ export const ProgressBar = ({ step, total }: { step: number; total: number }) =>
   return (
     <View accessible accessibilityLabel={`Step ${step} of ${total}`} style={{ flexDirection: "row", gap: 6 }}>
       {Array.from({ length: total }, (_, i) => (
-        <View key={i} style={{ flex: 1, height: 8, borderRadius: 4, backgroundColor: i < step ? c.brand : c.line }} />
+        <View key={i} style={{ flex: 1, height: 4, borderRadius: 2, backgroundColor: i < step ? c.brand : c.line }} />
       ))}
     </View>
   );
