@@ -9,20 +9,20 @@ export function Welcome({ onStart }: { onStart: () => void }) {
   return (
     <LinearGradient colors={[c.heroA, c.heroB]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ flex: 1, padding: 28, justifyContent: "space-between" }}>
-          <View style={{ flex: 1, alignItems: "center", justifyContent: "center", gap: 20 }}>
-            <View accessible={false} style={{ width: 84, height: 84, borderRadius: 26, backgroundColor: "#FFFFFF", alignItems: "center", justifyContent: "center" }}>
-              <Ionicons name="bus" size={46} color="#061A66" />
+        <View style={{ flex: 1, padding: 24, justifyContent: "space-between" }}>
+          <View style={{ flex: 1, alignItems: "center", justifyContent: "center", gap: 14 }}>
+            <View accessible={false} style={{ width: 64, height: 64, borderRadius: 20, backgroundColor: "#FFFFFF", alignItems: "center", justifyContent: "center" }}>
+              <Ionicons name="bus" size={34} color="#061A66" />
             </View>
-            <Text accessibilityRole="header" style={{ fontSize: 44, fontWeight: "800", letterSpacing: -1.5, color: "#FFFFFF" }}>GoNC</Text>
-            <Text style={{ fontSize: 20, lineHeight: 28, fontWeight: "600", textAlign: "center", color: "rgba(255,255,255,0.95)", maxWidth: 320 }}>
-              Powered by riders. Just for riders.
+            <Text accessibilityRole="header" style={{ fontSize: 34, fontWeight: "800", letterSpacing: -1.2, color: "#FFFFFF" }}>GoNC</Text>
+            <Text style={{ fontSize: 15, lineHeight: 22, fontWeight: "600", textAlign: "center", color: "rgba(255,255,255,0.95)", maxWidth: 320 }}>
+              Powered by riders · Just for riders
             </Text>
           </View>
           <Pressable accessibilityRole="button" accessibilityLabel="Get started" onPress={onStart}
-            style={({ pressed }) => ({ minHeight: 56, borderRadius: 16, backgroundColor: "#FFFFFF", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, transform: [{ scale: pressed ? 0.98 : 1 }] })}>
-            <Text style={{ fontSize: 18, fontWeight: "800", color: "#061A66" }}>Get started</Text>
-            <Ionicons name="arrow-forward" size={20} color="#061A66" />
+            style={({ pressed }) => ({ minHeight: 50, borderRadius: 14, backgroundColor: "#FFFFFF", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, transform: [{ scale: pressed ? 0.98 : 1 }] })}>
+            <Text style={{ fontSize: 16, fontWeight: "800", color: "#061A66" }}>Get started</Text>
+            <Ionicons name="arrow-forward" size={18} color="#061A66" />
           </Pressable>
         </View>
       </SafeAreaView>
