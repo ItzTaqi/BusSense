@@ -13,12 +13,17 @@ let package = Package(
     products: [
         .library(name: "GoNCCore", targets: ["GoNCCore"]),
         .library(name: "GoNCEngine", targets: ["GoNCEngine"]),
+        .library(name: "GoNCUI", targets: ["GoNCUI"]),
         .executable(name: "gonc-sim", targets: ["gonc-sim"]),
+        .executable(name: "gonc-snap", targets: ["gonc-snap"]),
     ],
     targets: [
         .target(name: "GoNCCore"),
         .target(name: "GoNCEngine", dependencies: ["GoNCCore"]),
+        .target(name: "GoNCUI", dependencies: ["GoNCCore"], resources: [.copy("Resources/Fonts")]),
         .executableTarget(name: "gonc-sim", dependencies: ["GoNCCore", "GoNCEngine"]),
+        .executableTarget(name: "gonc-snap", dependencies: ["GoNCCore", "GoNCUI"]),
+        .testTarget(name: "GoNCUITests", dependencies: ["GoNCUI", "GoNCCore"]),
         .testTarget(name: "GoNCEngineTests", dependencies: ["GoNCEngine"]),
         .testTarget(name: "GoNCCoreTests", dependencies: ["GoNCCore"], resources: [.copy("Resources/vectors.json")]),
     ]

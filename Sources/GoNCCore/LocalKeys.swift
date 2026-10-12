@@ -8,5 +8,6 @@ public enum LocalKeys {
     public static let alertPrefs = "gonc.alertprefs.v1"
     public static let rides = "gonc.rides.v1"
     public static let riderName = "gonc.ridername.v1"
-    public static let all: [String] = [children, appearance, terms, alertPrefs, rides, riderName]
+    public static let session = "gonc.session.v1"
+    public static let all: [String] = [children, appearance, terms, alertPrefs, rides, riderName, session]
 }
