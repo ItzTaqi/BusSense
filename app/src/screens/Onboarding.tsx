@@ -3,6 +3,7 @@ import { Text, TextInput, View } from "react-native";
 import { Btn, ProgressBar } from "../components/Ui";
 import { SelectField } from "../components/SelectField";
 import { CITIES, schoolsIn } from "../data/schools";
+import { parseDistrictCode } from "../lib/districtCode";
 import { canEnableSensing } from "../lib/tripToken";
 import { supabase } from "../lib/supabase";
 import { useApp } from "../state/store";
@@ -18,7 +19,7 @@ export function Onboarding() {
   const [city, setCity] = useState("");
   const [school, setSchool] = useState("");
   const [otherSchool, setOtherSchool] = useState(false);
-  const [bus, setBus] = useState("");
+  const [code, setCode] = useState("");
   const [stop, setStop] = useState("");
   const [amStart, setAmStart] = useState("06:45");
   const [amEnd, setAmEnd] = useState("07:30");
@@ -26,17 +27,18 @@ export function Onboarding() {
   const [pmEnd, setPmEnd] = useState("16:30");
   const can = year.length === 4 && canEnableSensing(Number(year));
   const schoolId = city && school ? `${city} · ${school}` : "";
+  const parsed = parseDistrictCode(code);
 
   const finish = async () => {
     const { data } = await supabase.auth.getUser();
     if (data.user) {
       await supabase.from("riders").upsert({
-        id: data.user.id, birth_year: Number(year), school_id: schoolId, declared_bus: bus,
+        id: data.user.id, birth_year: Number(year), school_id: schoolId, declared_bus: parsed?.bus, district_code: parsed?.code,
         am_stop_id: stop, pm_stop_id: stop, am_window_start: amStart, am_window_end: amEnd,
         pm_window_start: pmStart, pm_window_end: pmEnd,
       });
     }
-    set({ mode: "rider", birthYear: Number(year), declaredBus: bus });
+    set({ mode: "rider", birthYear: Number(year), declaredBus: parsed?.bus ?? "" });
   };
 
   const field = { textAlign: "center" as const, fontSize: 17, minHeight: 52, borderRadius: radius - 6, borderWidth: 1.5,
@@ -78,9 +80,15 @@ export function Onboarding() {
             options={schoolsIn(city)} otherLabel="My school isn't listed"
             onSelect={(v) => (v === "__other__" ? (setOtherSchool(true), setSchool("")) : setSchool(v))} />
         )}
-        <TextInput accessibilityLabel="Bus number" placeholder="Bus number" placeholderTextColor={c.sub} style={field} value={bus} onChangeText={setBus} />
+        <TextInput accessibilityLabel="District code" placeholder="District code" placeholderTextColor={c.sub} style={field}
+          autoCapitalize="characters" autoCorrect={false} value={code} onChangeText={setCode} maxLength={12} />
+        {code.length > 0 && (
+          <Text accessibilityLiveRegion="polite" style={{ fontSize: 15, textAlign: "center", color: parsed ? c.primary : c.danger, fontWeight: "700" }}>
+            {parsed ? `Bus ${parsed.bus}` : "Use letters, numbers and dashes, with at least one number"}
+          </Text>
+        )}
         <TextInput accessibilityLabel="Your stop" placeholder="Your stop" placeholderTextColor={c.sub} style={field} value={stop} onChangeText={setStop} />
-        <Btn primary label="Next" disabled={!schoolId || !bus} onPress={() => setStep(2)} />
+        <Btn primary label="Next" disabled={!schoolId || !parsed} onPress={() => setStep(2)} />
       </>)}
       {step === 2 && (<>
         {title("Bus windows", "We only listen in these times (24 h).")}
