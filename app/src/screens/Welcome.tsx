@@ -1,20 +1,22 @@
 import { Ionicons } from "@expo/vector-icons";
 import { PlusJakartaSans_500Medium, PlusJakartaSans_700Bold, PlusJakartaSans_800ExtraBold, useFonts } from "@expo-google-fonts/plus-jakarta-sans";
 import { LinearGradient } from "expo-linear-gradient";
-import { Pressable, SafeAreaView, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "../theme";
 
 // First screen: just the name and the tagline, centered, plus the one button needed to continue.
 export function Welcome({ onStart }: { onStart: () => void }) {
   const c = useTheme();
+  const insets = useSafeAreaInsets();
   // Plus Jakarta Sans for the home page only. Custom fonts carry their own weight, so no fontWeight here.
   const [loaded] = useFonts({ PlusJakartaSans_500Medium, PlusJakartaSans_700Bold, PlusJakartaSans_800ExtraBold });
   const f = { m: "PlusJakartaSans_500Medium", b: "PlusJakartaSans_700Bold", x: "PlusJakartaSans_800ExtraBold" };
   if (!loaded) return <LinearGradient colors={[c.heroA, c.heroB]} style={{ flex: 1 }} />; // same background, no font flash
   return (
     <LinearGradient colors={[c.heroA, c.heroB]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ flex: 1, padding: 24 }}>
+      <View style={{ flex: 1, padding: 24, paddingTop: 24 + insets.top }}>
+        <View style={{ flex: 1 }}>
           <View style={{ flex: 1, alignItems: "center", justifyContent: "center", gap: 18 }}>
             <Text accessibilityRole="header" style={{ fontSize: 64, fontFamily: f.x, letterSpacing: -2.5, color: "#FFFFFF" }}>GoNC</Text>
             <View style={{ paddingVertical: 8, paddingHorizontal: 18, borderRadius: 999, backgroundColor: "#FFFFFF" }}>
@@ -27,7 +29,7 @@ export function Welcome({ onStart }: { onStart: () => void }) {
             <Ionicons name="arrow-forward" size={18} color="#061A66" />
           </Pressable>
         </View>
-      </SafeAreaView>
+      </View>
     </LinearGradient>
   );
 }

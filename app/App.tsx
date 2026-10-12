@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
-import { Pressable, SafeAreaView, ScrollView, StatusBar, Text, View } from "react-native";
+import { Pressable, ScrollView, StatusBar, Text, View } from "react-native";
+import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
 import { Footer } from "./src/components/Footer";
 import { TabBar, type Tab } from "./src/components/TabBar";
 import { ensureAnonSession } from "./src/lib/supabase";
@@ -25,6 +26,15 @@ const PARENT_TABS: Tab[] = [
 ];
 
 export default function App() {
+  return (
+    <SafeAreaProvider>
+      <Shell />
+    </SafeAreaProvider>
+  );
+}
+
+function Shell() {
+  const insets = useSafeAreaInsets();
   const { mode, demo, set, loadChildren, loadAppearance } = useApp();
   const c = useTheme();
   const [tab, setTab] = useState("home");
@@ -55,15 +65,15 @@ export default function App() {
     <View style={{ flex: 1, backgroundColor: c.bg }}>
       <StatusBar barStyle="light-content" />
       {!welcome && (
-        <View style={{ backgroundColor: c.heroA }}>
-          <SafeAreaView>
+        <View style={{ backgroundColor: c.heroA, paddingTop: insets.top }}>
+          <View>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, paddingVertical: 8 }}>
               <View style={{ width: 26, height: 26, borderRadius: 8, backgroundColor: "#FFFFFF", alignItems: "center", justifyContent: "center" }}>
                 <Ionicons name="bus" size={16} color="#061A66" />
               </View>
               <Text accessibilityRole="header" style={{ fontSize: 17, fontWeight: "800", color: "#fff", letterSpacing: -0.2 }}>GoNC</Text>
             </View>
-          </SafeAreaView>
+          </View>
         </View>
       )}
       {demo && (
@@ -77,7 +87,6 @@ export default function App() {
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>{body}</ScrollView>
       {mode && !demo && !addingChild && <TabBar tabs={mode === "rider" ? RIDER_TABS : PARENT_TABS} active={tab} onChange={changeTab} />}
       <Footer />
-      <SafeAreaView style={{ backgroundColor: c.card }} />
     </View>
   );
 }

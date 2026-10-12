@@ -12,7 +12,7 @@ const light = {
 };
 const dark: typeof light = {
   mode: "dark",
-  bg: "#04070F", card: "#0C1330", cardAlt: "#16224F", ink: "#FFFFFF", sub: "#C0CCF2", line: "#2B3D78",
+  bg: "#0B1430", card: "#111D42", cardAlt: "#1B2A5C", ink: "#FFFFFF", sub: "#C0CCF2", line: "#2E4283",
   brand: "#6B96FF", onBrand: "#03102E", primary: "#6B96FF", onPrimary: "#03102E",
   danger: "#FF8FA6", shadow: "#000000", heroA: "#0B1F73", heroB: "#2F5FFF",
 };

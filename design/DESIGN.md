@@ -6,7 +6,7 @@ Source of truth in code: `app/src/theme.ts` and `app/src/components/Ui.tsx`.
 ## Color (white + blue)
 | Token | Light | Dark | Use |
 |---|---|---|---|
-| bg / card | `#FFFFFF` | `#0A1020` / `#121A33` | surfaces (white is the main color) |
+| bg / card | `#FFFFFF` | `#0B1430` / `#111D42` | surfaces (white is the main color) |
 | cardAlt | `#F1F6FF` | `#1A2547` | tinted panels |
 | ink / sub | `#0B1220` / `#5B6B8C` | `#F2F6FF` / `#9DB0DC` | text |
 | line | `#DCE6F7` | `#26335C` | borders |
@@ -58,3 +58,8 @@ Several children are supported: chips switch the active child; add or remove the
 ## Report a problem
 One quiet "Report a problem" button on Today. Tapping it expands into "Bus didn't come" and "Bus came early" (side by side when there is
 room). Sending collapses it back and shows "Thanks, report sent"; each choice locks for 60 s to prevent double reports.
+
+## Bottom bar and safe areas
+The tab bar and the footer share one background (card color). The footer alone owns the bottom safe-area inset, so there is exactly one
+bottom strip on iPhones with a home indicator (no stacked spacers). The top inset is applied once, in the header bar. Dark mode uses a deep
+navy background, never near-black, so empty space matches the cards.
