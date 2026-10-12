@@ -17,7 +17,7 @@ export function TabBar({ tabs, active, onChange }: { tabs: Tab[]; active: string
             <View style={{ paddingHorizontal: 16, paddingVertical: 3, borderRadius: 999, backgroundColor: on ? c.cardAlt : "transparent" }}>
               <Ionicons name={on ? t.icon : (`${t.icon}-outline` as IconName)} size={22} color={on ? c.primary : c.sub} />
             </View>
-            <Text style={{ fontSize: 11, fontWeight: on ? "700" : "500", color: on ? c.primary : c.sub }}>{t.label}</Text>
+            <Text style={{ fontSize: 11, fontWeight: on ? "800" : "600", color: on ? c.primary : c.sub }}>{t.label}</Text>
           </Pressable>
         );
       })}

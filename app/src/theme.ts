@@ -4,15 +4,15 @@ import { useColorScheme } from "react-native";
 // Status is never color: it is icon + text + fill style. See /design/DESIGN.md.
 const light = {
   mode: "light" as "light" | "dark",
-  bg: "#FFFFFF", card: "#FFFFFF", cardAlt: "#F1F6FF", ink: "#0B1220", sub: "#5B6B8C", line: "#DCE6F7",
-  brand: "#1F6BFF", onBrand: "#FFFFFF", primary: "#1F6BFF", onPrimary: "#FFFFFF",
-  danger: "#C62145", shadow: "#1F6BFF", heroA: "#1F6BFF", heroB: "#0B3FBF",
+  bg: "#FFFFFF", card: "#FFFFFF", cardAlt: "#EAF0FF", ink: "#050A1A", sub: "#3B4766", line: "#C3D1F2",
+  brand: "#0F46E6", onBrand: "#FFFFFF", primary: "#0F46E6", onPrimary: "#FFFFFF",
+  danger: "#B3123A", shadow: "#0F46E6", heroA: "#061A66", heroB: "#0F46E6",
 };
 const dark: typeof light = {
   mode: "dark",
-  bg: "#0A1020", card: "#121A33", cardAlt: "#1A2547", ink: "#F2F6FF", sub: "#9DB0DC", line: "#26335C",
-  brand: "#4D8DFF", onBrand: "#06122B", primary: "#4D8DFF", onPrimary: "#06122B",
-  danger: "#FF7B94", shadow: "#000000", heroA: "#1747B8", heroB: "#0B2A73",
+  bg: "#04070F", card: "#0C1330", cardAlt: "#16224F", ink: "#FFFFFF", sub: "#C0CCF2", line: "#2B3D78",
+  brand: "#6B96FF", onBrand: "#03102E", primary: "#6B96FF", onPrimary: "#03102E",
+  danger: "#FF8FA6", shadow: "#000000", heroA: "#0B1F73", heroB: "#2F5FFF",
 };
 export type Theme = typeof light;
 export const useTheme = (): Theme => (useColorScheme() === "dark" ? dark : light);
@@ -27,8 +27,8 @@ export const onHero = { fg: "#FFFFFF", dim: "rgba(255,255,255,0.78)", faint: "rg
 export type Source = "LIVE" | "RECENT" | "ESTIMATE" | "NO DATA";
 // Source look = icon + text + fill style (solid / outline / dashed / faint), never hue alone.
 export function sourceStyle(s: string, onDark: boolean) {
-  const solid = onDark ? "#FFFFFF" : "#1F6BFF";
-  const inverse = onDark ? "#0B3FBF" : "#FFFFFF";
+  const solid = onDark ? "#FFFFFF" : "#0F46E6";
+  const inverse = onDark ? "#061A66" : "#FFFFFF";
   switch (s) {
     case "LIVE": return { fg: inverse, bg: solid, border: solid, dash: false, icon: "radio" as const };
     case "RECENT": return { fg: solid, bg: "transparent", border: solid, dash: false, icon: "time" as const };

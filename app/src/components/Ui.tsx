@@ -35,8 +35,7 @@ export const Card = ({ children, tone, icon, title }: { children?: ReactNode; to
   const fg = tone === "brand" ? c.onBrand : c.ink;
   return (
     <View style={{ backgroundColor: bg, borderRadius: radius + 2, padding: space.md, gap: space.sm, alignItems: "stretch",
-      borderWidth: tone ? 0 : 1, borderColor: c.line,
-      shadowColor: c.shadow, shadowOpacity: c.mode === "dark" ? 0.3 : 0.07, shadowRadius: 18, shadowOffset: { width: 0, height: 8 }, elevation: 2 }}>
+      borderWidth: tone ? 0 : 1, borderColor: c.line }}>
       {(icon || title) && (
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8 }}>
           {icon && <IconBubble name={icon} />}
@@ -72,9 +71,9 @@ export const Btn = ({ label, onPress, danger, disabled, primary, icon }: {
     <Pressable accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ disabled: !!disabled }} disabled={disabled} onPress={onPress}
       style={({ pressed }) => ({ minHeight: 50, borderRadius: radius - 2, paddingHorizontal: space.md, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8,
         backgroundColor: primary ? c.brand : c.cardAlt, opacity: disabled ? 0.4 : 1, transform: [{ scale: pressed ? 0.98 : 1 }],
-        shadowColor: c.brand, shadowOpacity: primary && !disabled ? 0.25 : 0, shadowRadius: 12, shadowOffset: { width: 0, height: 6 } })}>
+        })}>
       {icon && <Ionicons name={icon} size={20} color={fg} />}
-      <Text style={{ fontSize: type.body, fontWeight: "600", color: fg }}>{label}</Text>
+      <Text style={{ fontSize: type.body, fontWeight: "700", color: fg }}>{label}</Text>
     </Pressable>
   );
 };
@@ -117,7 +116,6 @@ export const Hero = ({ children, icon }: { children: ReactNode; icon?: IconName 
   return (
     <LinearGradient colors={[c.heroA, c.heroB]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
       style={{ borderRadius: radius + 10, padding: space.lg, gap: space.sm, overflow: "hidden", alignItems: "center" }}>
-      {icon && <Ionicons name={icon} size={130} color="rgba(255,255,255,0.07)" style={{ position: "absolute", right: -16, top: -8 }} />}
       {children}
     </LinearGradient>
   );

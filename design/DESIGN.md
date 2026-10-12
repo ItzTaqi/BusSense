@@ -10,7 +10,7 @@ Source of truth in code: `app/src/theme.ts` and `app/src/components/Ui.tsx`.
 | cardAlt | `#F1F6FF` | `#1A2547` | tinted panels |
 | ink / sub | `#0B1220` / `#5B6B8C` | `#F2F6FF` / `#9DB0DC` | text |
 | line | `#DCE6F7` | `#26335C` | borders |
-| brand (accent) | `#1F6BFF` | `#4D8DFF` | primary button, selected tab, logo, progress |
+| brand (accent) | `#0F46E6` | `#6B96FF` | primary button, selected tab, logo, progress |
 | hero | `#1F6BFF` to `#0B3FBF` | `#1747B8` to `#0B2A73` | blue gradient cards (content always white) |
 | danger | `#C62145` | `#FF7B94` | "Bus didn't come", delete (the only other hue) |
 
@@ -31,3 +31,14 @@ Screen, Hero, Card (icon + title), Input (soft filled field, blue focus ring), B
 ProgressBar, RouteTrack (bus, stops, home), TabBar. Icons: Ionicons (`@expo/vector-icons`).
 
 Preview the palette: open `design/palette.html`.
+
+## Navigation (role-based)
+The first screen picks the role; the app then shows only that role's tabs, with no role switcher.
+- Rider: Ride, Settings.
+- Parent: Stop board, Alerts, Report card, Settings.
+- Settings holds Privacy, Language, Demo, and (riders only) Trip receipt and Record data. The demo is a sample stop board
+  opened from Settings with an "Exit demo" bar; it never appears on the first screen.
+
+## Contrast
+Light: ink `#050A1A`, secondary `#3B4766`, accent `#0F46E6` (white on accent about 6.6:1). Dark: white text, accent `#6B96FF`.
+Cards are flat with a 1 px border, no shadows.

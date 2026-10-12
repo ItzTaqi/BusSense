@@ -50,6 +50,7 @@ export function Parent({ tab }: { tab: string }) {
       <SelectField label="District" value={district} options={DISTRICTS.map(districtLabel)} onSelect={setDistrict} />
       <Input accessibilityLabel="Bus number" placeholder="Bus number" value={route} onChangeText={setRoute} maxLength={8} />
       <Input accessibilityLabel="Stop" placeholder="Stop" value={stop} onChangeText={setStop} />
+      <P dim>Minutes to walk to your stop</P>
       <Input accessibilityLabel="Walking minutes" placeholder="Walking minutes" keyboardType="number-pad" value={walk} onChangeText={setWalk} />
       <Btn primary label="Save" disabled={!route || !stop} onPress={save} />
     </Screen>
@@ -61,7 +62,6 @@ export function Parent({ tab }: { tab: string }) {
   const src = sourceLabel(row?.source ?? "NO_DATA");
   return (
     <Screen>
-      {demo && <Card tone="alt" icon="play-circle" title="Demo mode"><P dim>Scripted scenario, not real data.</P></Card>}
       <Hero icon="bus">
         <P color="rgba(255,255,255,0.8)">Bus {route} · stop {stop}</P>
         <Badge text={src} />
