@@ -17,11 +17,11 @@ export function Settings({ page, setPage, onAddChild }: { page: SettingsPage; se
 
   const Row = ({ icon, label, hint, onPress, right }: { icon: IconName; label: string; hint?: string; onPress: () => void; right?: string }) => (
     <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress}
-      style={{ minHeight: 56, flexDirection: "row", alignItems: "center", gap: 12, paddingHorizontal: 14 }}>
-      <IconBubble name={icon} size={34} />
-      <View style={{ flex: 1 }}>
+      style={{ minHeight: 72, flexDirection: "row", alignItems: "center", gap: 16, paddingHorizontal: 18, paddingVertical: 14 }}>
+      <IconBubble name={icon} size={40} />
+      <View style={{ flex: 1, gap: 4 }}>
         <Text style={{ fontSize: 16, fontWeight: "600", color: c.ink }}>{label}</Text>
-        {hint ? <Text style={{ fontSize: 13, color: c.sub }}>{hint}</Text> : null}
+        {hint ? <Text style={{ fontSize: 13, lineHeight: 18, color: c.sub }}>{hint}</Text> : null}
       </View>
       {right ? <Text style={{ fontSize: 14, fontWeight: "600", color: c.sub }}>{right}</Text> : null}
       <Ionicons name="chevron-forward" size={18} color={c.sub} />
@@ -30,10 +30,10 @@ export function Settings({ page, setPage, onAddChild }: { page: SettingsPage; se
   const Group = ({ children }: { children: React.ReactNode }) => (
     <View style={{ borderRadius: 16, borderWidth: 1, borderColor: c.line, backgroundColor: c.card, overflow: "hidden" }}>{children}</View>
   );
-  const Sep = () => <View style={{ height: 1, marginLeft: 60, backgroundColor: c.line }} />;
+  const Sep = () => <View style={{ height: 1, marginLeft: 74, backgroundColor: c.line }} />;
 
   if (page) {
-    const titles = { privacy: "Privacy", receipt: "Trip receipt", record: "Record data" } as const;
+    const titles = { privacy: "Privacy and Terms", receipt: "Trip receipt", record: "Record data" } as const;
     return (
       <View style={{ flex: 1 }}>
         <Pressable accessibilityRole="button" accessibilityLabel="Back to settings" onPress={() => setPage("")}
@@ -50,10 +50,10 @@ export function Settings({ page, setPage, onAddChild }: { page: SettingsPage; se
   }
 
   return (
-    <ScrollView contentContainerStyle={{ padding: 16, gap: 16 }}>
-      <Text accessibilityRole="header" style={{ fontSize: 22, fontWeight: "800", color: c.ink }}>Settings</Text>
+    <ScrollView contentContainerStyle={{ padding: 20, gap: 28 }}>
+      <Text accessibilityRole="header" style={{ fontSize: 24, fontWeight: "800", color: c.ink, marginBottom: 2 }}>Settings</Text>
       <Group>
-        <Row icon="shield-checkmark" label="Privacy" hint="What we collect and your data" onPress={() => setPage("privacy")} />
+        <Row icon="shield-checkmark" label="Privacy and Terms" hint="How your data is used" onPress={() => setPage("privacy")} />
         {mode === "rider" && (<>
           <Sep /><Row icon="receipt" label="Trip receipt" hint="Was a bus published? Points kept" onPress={() => setPage("receipt")} />
           <Sep /><Row icon="recording" label="Record data" hint="Logging build for training" onPress={() => setPage("record")} />
@@ -64,9 +64,9 @@ export function Settings({ page, setPage, onAddChild }: { page: SettingsPage; se
           {children.map((k, i) => (
             <View key={k.id}>
               {i > 0 && <Sep />}
-              <View style={{ minHeight: 56, flexDirection: "row", alignItems: "center", gap: 12, paddingHorizontal: 14 }}>
-                <IconBubble name="person-circle" size={34} />
-                <View style={{ flex: 1 }}>
+              <View style={{ minHeight: 72, flexDirection: "row", alignItems: "center", gap: 16, paddingHorizontal: 18, paddingVertical: 14 }}>
+                <IconBubble name="person-circle" size={40} />
+                <View style={{ flex: 1, gap: 4 }}>
                   <Text style={{ fontSize: 16, fontWeight: "600", color: c.ink }}>{k.name}</Text>
                   <Text style={{ fontSize: 13, color: c.sub }}>Bus {k.bus} · {k.stop}</Text>
                 </View>
