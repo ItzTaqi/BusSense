@@ -18,8 +18,8 @@ What the research found (October 2026):
 | Bladen County | 75971 | https://blp.bladen.k12.nc.us/students-families/here-comes-the-bus |
 | Wilson County | 13509 | https://www.wilsonschoolsnc.net/departments/transportation-services/here-comes-the-bus-app |
 
-How GoYellow uses the code: as a district identifier only, stored on the rider's account row (`riders.district_code`).
-GoYellow does **not** connect to Here Comes the Bus or read the buses' own GPS hardware. Doing that would need an agreement
+How GoNC uses the code: as a district identifier only, stored on the rider's account row (`riders.district_code`).
+GoNC does **not** connect to Here Comes the Bus or read the buses' own GPS hardware. Doing that would need an agreement
 with the district and the vendor. Not done, not assumed.
 
 Other tracking vendors seen in NC: Edulog (New Hanover). Districts not on the list use "My district isn't listed" and type a 5-digit code.

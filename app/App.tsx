@@ -58,7 +58,7 @@ export default function App() {
               <View style={{ width: 26, height: 26, borderRadius: 8, backgroundColor: "#FFFFFF", alignItems: "center", justifyContent: "center" }}>
                 <Ionicons name="bus" size={16} color="#061A66" />
               </View>
-              <Text accessibilityRole="header" style={{ fontSize: 17, fontWeight: "800", color: "#fff", letterSpacing: -0.2 }}>GoYellow</Text>
+              <Text accessibilityRole="header" style={{ fontSize: 17, fontWeight: "800", color: "#fff", letterSpacing: -0.2 }}>GoNC</Text>
             </View>
           </SafeAreaView>
         </View>

@@ -3,7 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Pressable, SafeAreaView, Text, View } from "react-native";
 import { useTheme } from "../theme";
 
-// First screen: high-contrast blue panel, the app name, one clear sentence, one clear start button.
+// First screen: high-contrast blue panel, the app name, one clear line, one clear start button.
 export function Welcome({ onStart }: { onStart: () => void }) {
   const c = useTheme();
   return (
@@ -14,12 +14,9 @@ export function Welcome({ onStart }: { onStart: () => void }) {
             <View accessible={false} style={{ width: 84, height: 84, borderRadius: 26, backgroundColor: "#FFFFFF", alignItems: "center", justifyContent: "center" }}>
               <Ionicons name="bus" size={46} color="#061A66" />
             </View>
-            <Text accessibilityRole="header" style={{ fontSize: 44, fontWeight: "800", letterSpacing: -1.5, color: "#FFFFFF" }}>GoYellow</Text>
-            <Text style={{ fontSize: 17, lineHeight: 25, textAlign: "center", color: "rgba(255,255,255,0.92)", maxWidth: 320 }}>
-              See where your school bus really is, even on substitute days and when the official tracker fails.
-            </Text>
-            <Text style={{ fontSize: 14, lineHeight: 20, textAlign: "center", color: "rgba(255,255,255,0.72)", maxWidth: 300 }}>
-              Powered by riders. No device on the bus. No one is tracked.
+            <Text accessibilityRole="header" style={{ fontSize: 44, fontWeight: "800", letterSpacing: -1.5, color: "#FFFFFF" }}>GoNC</Text>
+            <Text style={{ fontSize: 20, lineHeight: 28, fontWeight: "600", textAlign: "center", color: "rgba(255,255,255,0.95)", maxWidth: 320 }}>
+              Powered by riders. Just for riders.
             </Text>
           </View>
           <Pressable accessibilityRole="button" accessibilityLabel="Get started" onPress={onStart}
@@ -46,7 +43,7 @@ export function RoleSelect({ onRider, onParent, onBack }: { onRider: () => void;
   );
   return (
     <View style={{ flex: 1, padding: 24, gap: 14, justifyContent: "center" }}>
-      <Text accessibilityRole="header" style={{ fontSize: 24, fontWeight: "800", textAlign: "center", color: c.ink }}>Who is using GoYellow?</Text>
+      <Text accessibilityRole="header" style={{ fontSize: 24, fontWeight: "800", textAlign: "center", color: c.ink }}>Who is using GoNC?</Text>
       <Text style={{ fontSize: 14, textAlign: "center", color: c.sub }}>You will only see what is useful for you.</Text>
       {option("bus", "I ride the bus", "Share your bus so others can see it. Ages 13+.", onRider, true)}
       {option("people", "I'm a parent", "Follow your child's bus to your stop.", onParent, false)}

@@ -6,7 +6,7 @@ import { Accelerometer } from "expo-sensors";
 import { supabase } from "./supabase";
 import { newTripToken } from "./tripToken";
 
-const TASK = "goyellow-dev-recorder";
+const TASK = "gonc-dev-recorder";
 type Label = "bus" | "car" | "walk";
 interface Row { trip_token: string; label: Label; t: string; lat: number; lon: number;
   speed_mps: number | null; accuracy_m: number | null; ax: number | null; ay: number | null; az: number | null }
@@ -47,7 +47,7 @@ export async function startRecording(label: Label): Promise<void> {
   await Location.startLocationUpdatesAsync(TASK, {
     accuracy: Location.Accuracy.BestForNavigation, timeInterval: 5000, distanceInterval: 0,
     showsBackgroundLocationIndicator: true,
-    foregroundService: { notificationTitle: "GoYellow is recording", notificationBody: "Logging build" },
+    foregroundService: { notificationTitle: "GoNC is recording", notificationBody: "Logging build" },
   });
   timer = setInterval(flush, 15000);
 }

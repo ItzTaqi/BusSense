@@ -1,6 +1,6 @@
 import { useColorScheme } from "react-native";
 
-// GoYellow design tokens: white surfaces, blue accent (plus one red for destructive actions).
+// GoNC design tokens: white surfaces, blue accent (plus one red for destructive actions).
 // Status is never color: it is icon + text + fill style. See /design/DESIGN.md.
 const light = {
   mode: "light" as "light" | "dark",

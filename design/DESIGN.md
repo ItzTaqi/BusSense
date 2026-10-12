@@ -1,4 +1,4 @@
-# GoYellow design system
+# GoNC design system
 
 **Feel:** minimal, white with a blue accent. Everything is centered.
 Source of truth in code: `app/src/theme.ts` and `app/src/components/Ui.tsx`.
@@ -44,6 +44,6 @@ Light: ink `#050A1A`, secondary `#3B4766`, accent `#0F46E6` (white on accent abo
 Cards are flat with a 1 px border, no shadows.
 
 ## First screens
-Welcome: full-bleed blue gradient, white app name "GoYellow", one description, one white "Get started" button. Then a role screen
+Welcome: full-bleed blue gradient, white app name "GoNC", one description, one white "Get started" button. Then a role screen
 (rider / parent). Report buttons ("Bus didn't come", "Bus came early") sit side by side when there is room, stack on narrow screens,
 and show Sending, Sent (locked 60 s) or a retry message.

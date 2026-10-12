@@ -1,4 +1,4 @@
--- GoYellow schema. RLS on every table. Location tables never reference account tables.
+-- GoNC schema. RLS on every table. Location tables never reference account tables.
 create extension if not exists postgis;
 create extension if not exists pgcrypto;
 

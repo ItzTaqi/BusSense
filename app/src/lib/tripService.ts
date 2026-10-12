@@ -9,7 +9,7 @@ import { predictBus, UPLOAD_THRESHOLD, type Model } from "../classifier/predict"
 import { supabase } from "./supabase";
 import { newTripToken } from "./tripToken";
 
-const TASK = "goyellow-trip";
+const TASK = "gonc-trip";
 const WINDOW_SAMPLES = 36; // 180 s / 5 s
 
 interface Sample { t: number; lat: number; lon: number; speed: number; acc: number; heading: number; az: number }
@@ -67,7 +67,7 @@ export async function startTrip(declaredBus: string, cb?: (p: number) => void): 
   await Location.startLocationUpdatesAsync(TASK, {
     accuracy: Location.Accuracy.High, timeInterval: 5000, distanceInterval: 0,
     showsBackgroundLocationIndicator: true,
-    foregroundService: { notificationTitle: "GoYellow is listening", notificationBody: "Only during your bus window" },
+    foregroundService: { notificationTitle: "GoNC is listening", notificationBody: "Only during your bus window" },
   });
   timer = setInterval(flush, 15000);
   return token;

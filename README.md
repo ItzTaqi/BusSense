@@ -1,5 +1,5 @@
 <<<<<<< HEAD
-# GoYellow
+# GoNC
 > Community supplement – not the official WCPSS tracker.
 
 Prototype that shows families where a school bus is by detecting groups of 3+ opted-in rider phones
