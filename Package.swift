@@ -12,9 +12,14 @@ let package = Package(
     platforms: [.macOS(.v14), .iOS(.v17)],
     products: [
         .library(name: "GoNCCore", targets: ["GoNCCore"]),
+        .library(name: "GoNCEngine", targets: ["GoNCEngine"]),
+        .executable(name: "gonc-sim", targets: ["gonc-sim"]),
     ],
     targets: [
         .target(name: "GoNCCore"),
+        .target(name: "GoNCEngine", dependencies: ["GoNCCore"]),
+        .executableTarget(name: "gonc-sim", dependencies: ["GoNCCore", "GoNCEngine"]),
+        .testTarget(name: "GoNCEngineTests", dependencies: ["GoNCEngine"]),
         .testTarget(name: "GoNCCoreTests", dependencies: ["GoNCCore"], resources: [.copy("Resources/vectors.json")]),
     ]
 )
