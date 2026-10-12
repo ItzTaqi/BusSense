@@ -8,7 +8,7 @@ import { Onboarding } from "./src/screens/Onboarding";
 import { Parent } from "./src/screens/Parent";
 import { RiderHome } from "./src/screens/RiderHome";
 import { Settings, type SettingsPage } from "./src/screens/Settings";
-import { Welcome } from "./src/screens/Welcome";
+import { RoleSelect, Welcome } from "./src/screens/Welcome";
 import { useApp } from "./src/state/store";
 import { useTheme } from "./src/theme";
 
@@ -20,7 +20,7 @@ const RIDER_TABS: Tab[] = [
 const PARENT_TABS: Tab[] = [
   { key: "board", label: "Stop board", icon: "location" },
   { key: "alerts", label: "Alerts", icon: "notifications" },
-  { key: "report", label: "Report card", icon: "stats-chart" },
+  { key: "report", label: "Weekly report", icon: "stats-chart" },
   { key: "settings", label: "Settings", icon: "settings" },
 ];
 
@@ -29,7 +29,7 @@ export default function App() {
   const c = useTheme();
   const [tab, setTab] = useState("home");
   const [settingsPage, setSettingsPage] = useState<SettingsPage>("");
-  const [onboarding, setOnboarding] = useState(false);
+  const [stage, setStage] = useState<"welcome" | "role" | "onboarding">("welcome");
   useEffect(() => { ensureAnonSession().catch(() => {}); }, []);
 
   const go = (s: string) => {
@@ -37,11 +37,12 @@ export default function App() {
     else setTab(s);
   };
   const changeTab = (k: string) => { if (k === "settings") setSettingsPage(""); setTab(k); };
-  const welcome = !mode && !onboarding;
+  const welcome = !mode && stage !== "onboarding";
 
   let body: React.ReactNode;
   if (demo) body = <Parent key="demo" tab="board" />;
-  else if (welcome) body = <Welcome onRider={() => setOnboarding(true)} onParent={() => { set({ mode: "parent" }); setTab("board"); }} />;
+  else if (welcome && stage === "welcome") body = <Welcome onStart={() => setStage("role")} />;
+  else if (welcome) body = <RoleSelect onRider={() => setStage("onboarding")} onParent={() => { set({ mode: "parent" }); setTab("board"); }} onBack={() => setStage("welcome")} />;
   else if (!mode) body = <Onboarding />;
   else if (tab === "settings") body = <Settings page={settingsPage} setPage={setSettingsPage} />;
   else if (mode === "parent") body = <Parent key="real" tab={tab} />;

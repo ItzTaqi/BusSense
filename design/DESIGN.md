@@ -35,10 +35,15 @@ Preview the palette: open `design/palette.html`.
 ## Navigation (role-based)
 The first screen picks the role; the app then shows only that role's tabs, with no role switcher.
 - Rider: Ride, Settings.
-- Parent: Stop board, Alerts, Report card, Settings.
+- Parent: Stop board, Alerts, Weekly report, Settings.
 - Settings holds Privacy, Language, Demo, and (riders only) Trip receipt and Record data. The demo is a sample stop board
   opened from Settings with an "Exit demo" bar; it never appears on the first screen.
 
 ## Contrast
 Light: ink `#050A1A`, secondary `#3B4766`, accent `#0F46E6` (white on accent about 6.6:1). Dark: white text, accent `#6B96FF`.
 Cards are flat with a 1 px border, no shadows.
+
+## First screens
+Welcome: full-bleed blue gradient, white app name "GoYellow", one description, one white "Get started" button. Then a role screen
+(rider / parent). Report buttons ("Bus didn't come", "Bus came early") sit side by side when there is room, stack on narrow screens,
+and show Sending, Sent (locked 60 s) or a retry message.

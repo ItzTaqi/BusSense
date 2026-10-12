@@ -37,6 +37,7 @@ PYTHONPATH=worker .venv/bin/python -m classifier.make_synthetic   # SYNTHETIC da
 ```
 
 ## Honest status
+* The Weekly report's insights are computed from anonymous parent reports. The AI report (`supabase/functions/weekly-summary`) needs `ANTHROPIC_API_KEY` set as a Supabase secret and has not been tested against the live API. On-time % and minutes-late are not built (they need route learning).
 * Birthday uses a calendar picker; the full birth date stays on the phone (only the birth year is uploaded).
 * District codes are Here Comes the Bus codes from district pages (`docs/DISTRICT_CODES.md`). Verify each with the district. The app does not integrate with Here Comes the Bus.
 * School dropdown data (`app/src/data/schools.json`) comes from OpenStreetMap for 12 Wake County cities (ODbL). It is incomplete

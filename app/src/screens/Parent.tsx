@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Alert, Text } from "react-native";
+import { Text } from "react-native";
 import { Badge, Btn, Card, H, Hero, Input, P, Screen } from "../components/Ui";
 import { RouteTrack } from "../components/RouteTrack";
-import { sendReport, subscribeStatus, StatusRow } from "../lib/api";
+import { subscribeStatus, StatusRow } from "../lib/api";
 import { SelectField } from "../components/SelectField";
 import { DISTRICTS, districtLabel } from "../data/districts";
 import { leaveByMinutes, sourceLabel } from "../lib/leaveBy";
@@ -10,8 +10,9 @@ import { DEMO_STEPS } from "../demo/scenario";
 import { supabase } from "../lib/supabase";
 import { useApp } from "../state/store";
 import { radius, type, useTheme } from "../theme";
+import { ReportButtons } from "../components/ReportButtons";
 import { AlertsSettings } from "./AlertsSettings";
-import { ReportCard } from "./ReportCard";
+import { WeeklyReport } from "./WeeklyReport";
 
 export function Parent({ tab }: { tab: string }) {
   const demo = useApp((s) => s.demo);
@@ -34,14 +35,15 @@ export function Parent({ tab }: { tab: string }) {
   useEffect(() => { if (saved && !demo) return subscribeStatus(route, stop, setRow); }, [saved, demo, route, stop]);
 
   const save = async () => {
-    const { data } = await supabase.auth.getUser();
-    if (data.user) {
-      await supabase.from("followers").upsert({ id: data.user.id, walk_min: Number(walk) || 3 });
-      await supabase.from("follows").upsert({ follower_id: data.user.id, route_label: route, stop_id: stop });
-    }
+    try {
+      const { data } = await supabase.auth.getUser();
+      if (data.user) {
+        await supabase.from("followers").upsert({ id: data.user.id, walk_min: Number(walk) || 3 });
+        await supabase.from("follows").upsert({ follower_id: data.user.id, route_label: route, stop_id: stop });
+      }
+    } catch { /* offline: still show the board; it fills in when the connection returns */ }
     setSaved(true);
   };
-  const field = { textAlign: "center" as const, fontSize: 20, borderWidth: 2, borderColor: c.line, borderRadius: radius, padding: 14, color: c.ink, backgroundColor: c.card, minHeight: 56 } as const;
   const leave = row ? leaveByMinutes(row.eta_lo, Number(walk) || 3) : null;
 
   if (!saved) return (
@@ -56,7 +58,7 @@ export function Parent({ tab }: { tab: string }) {
     </Screen>
   );
   if (tab === "alerts") return <Screen><AlertsSettings route={route} stop={stop} /></Screen>;
-  if (tab === "report") return <Screen><ReportCard route={route} /></Screen>;
+  if (tab === "report") return <Screen><WeeklyReport route={route} /></Screen>;
 
   const hasEta = row?.eta_min != null;
   const src = sourceLabel(row?.source ?? "NO_DATA");
@@ -82,8 +84,7 @@ export function Parent({ tab }: { tab: string }) {
         </Card>
       )}
       <Card icon="megaphone" title="Tell other families">
-        <Btn danger icon="close-circle" label="Bus didn't come" onPress={async () => { await sendReport(route, stop, "no_show"); Alert.alert("Thanks", "Report sent (anonymous)."); }} />
-        <Btn icon="flash" label="Bus came early" onPress={async () => { await sendReport(route, stop, "early"); Alert.alert("Thanks", "Report sent (anonymous)."); }} />
+        <ReportButtons route={route} stop={stop} />
       </Card>
     </Screen>
   );
