@@ -1,38 +1,34 @@
 # GoYellow design system
 
-**Feel:** friendly, bright, trustworthy. Minimal home page, vibrant data screens.
+**Feel:** minimal, high-contrast, black and white. Everything is centered.
 Source of truth in code: `app/src/theme.ts` and `app/src/components/Ui.tsx`.
 
-## Color
+## Color (monochrome)
 | Token | Light | Dark | Use |
 |---|---|---|---|
-| sun | `#FFD60A` | same | brand, primary buttons, selected tab |
-| navy | `#0B1B3F` | `#14275C` hero | ink, hero gradient start |
-| blue | `#2E6BFF` | `#5C8DFF` | links, icons, hero gradient end |
-| violet | `#8B5CF6` | `#6D3FF0` | ESTIMATE badge, dark hero end |
-| mint | `#14D6A0` | same | LIVE badge, "your stop" |
-| amber | `#FF9F1C` | same | RECENT badge |
-| coral/danger | `#D6234A` | `#FF7B94` | "Bus didn't come", delete |
-| bg / card | `#F4F7FF` / `#FFFFFF` | `#070F26` / `#101D44` | surfaces |
+| bg | `#FFFFFF` | `#000000` | screen background |
+| card / cardAlt | `#FFFFFF` / `#F2F2F2` | `#121212` / `#1E1E1E` | surfaces |
+| ink | `#000000` | `#FFFFFF` | text, icons, selected states |
+| sub | `#5A5A5A` | `#A8A8A8` | secondary text |
+| line | `#D9D9D9` | `#2E2E2E` | borders |
+| brand / onBrand | `#000000` / `#FFFFFF` | `#FFFFFF` / `#000000` | primary button, selected tab, logo |
+| hero | `#000000` to `#3A3A3A` | `#1A1A1A` to `#3D3D3D` | dark gradient cards (content always white) |
+| danger | `#B00020` | `#FF6B81` | "Bus didn't come", delete (the only hue) |
 
 ## Rules
-1. **Status is never color alone.** Source badge = color + icon + text: LIVE (pulsing dot), RECENT (clock),
-   ESTIMATE (analytics), NO DATA (help). Route track states "N stops away" in text.
-2. **Touch targets** are at least 56 pt (buttons) and 52 pt (tabs). Body text is 18 pt and scales with system text size.
-3. **Motion** is one pulse (LIVE dot). It stops when the system "Reduce Motion" setting is on.
-4. **Contrast:** navy on sun, white on navy/blue/violet gradients. Re-check if you change a token.
-5. **Footer** "Community supplement – not the official WCPSS tracker." appears on every screen.
-6. **Dark mode** follows the phone setting. No in-app toggle.
+1. **Status is never color.** Source badge = icon + text + fill style:
+   LIVE solid fill + pulsing dot, RECENT outline + clock, ESTIMATE dashed outline + analytics icon, NO DATA faint fill + help icon.
+2. **Touch targets** at least 56 pt (buttons) and 52 pt (tabs). Body text 18 pt, scales with system text size.
+3. **Motion:** one pulse (LIVE dot), off when the system "Reduce Motion" setting is on.
+4. **Layout:** all text, titles, cards and heroes are center-aligned. Form rows in Alerts keep label left, switch right.
+5. **Footer** "Community supplement – not the official WCPSS tracker." on every screen except the minimal home page.
+6. **Dark mode** follows the phone setting.
 
 ## Type scale
-hero 72 (ETA number) · title 28 · body 18 · label 16 · tab 12.
+hero 72 (ETA) · title 28 · body 18 · label 16 · tab 12.
 
 ## Components
-Screen, Hero (gradient + watermark icon), Card (optional icon + title), Btn (primary gradient / outline / danger),
-Badge, PulseDot, IconBubble, ProgressBar (onboarding), RouteTrack (bus → stops → home), TabBar (4 rider / 3 parent tabs).
-Icons: Ionicons via `@expo/vector-icons`.
+Screen, Hero, Card (icon + title), Btn (primary solid / outline / danger), Badge, PulseDot, IconBubble,
+ProgressBar, RouteTrack (bus, stops, home), TabBar. Icons: Ionicons (`@expo/vector-icons`).
 
-## Screens
-Welcome (minimal) → Onboarding (5 steps) → Rider: Ride · Receipt · Record · Privacy.
-Parent: Stop board (hero ETA + range + route track + leave-by) · Alerts · Report card.
-Open `design/palette.html` in a browser to see the palette.
+Preview the palette: open `design/palette.html`.
