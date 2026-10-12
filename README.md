@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # GoYellow
 > Community supplement – not the official WCPSS tracker.
 
@@ -43,3 +44,7 @@ PYTHONPATH=worker .venv/bin/python -m classifier.make_synthetic   # SYNTHETIC da
   and battery numbers are not measured yet; scripts for those are TODO in `eval/`.
 * Worker `ESTIMATE` source (no live track) and OSRM map matching are not implemented; the worker only publishes LIVE/RECENT.
 * Nothing here has been run against a live Supabase project or on a device yet.
+=======
+# BusSense
+App for Congressionl App Challenge
+>>>>>>> 723acd19a23ee7c346d5a3a7f8891fb48190df9b

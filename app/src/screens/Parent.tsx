@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
-import { Alert, ScrollView, TextInput } from "react-native";
-import { Badge, Btn, H, P } from "../components/Ui";
-import { AlertsSettings } from "./AlertsSettings";
-import { ReportCard } from "./ReportCard";
+import { Alert, Text, TextInput } from "react-native";
+import { Badge, Btn, Card, H, P, Screen } from "../components/Ui";
 import { sendReport, subscribeStatus, StatusRow } from "../lib/api";
 import { leaveByMinutes, sourceLabel } from "../lib/leaveBy";
 import { DEMO_STEPS } from "../demo/scenario";
 import { supabase } from "../lib/supabase";
 import { useApp } from "../state/store";
+import { radius, type, useTheme } from "../theme";
+import { AlertsSettings } from "./AlertsSettings";
+import { ReportCard } from "./ReportCard";
 
 export function Parent() {
   const demo = useApp((s) => s.demo);
+  const c = useTheme();
   const [route, setRoute] = useState("");
   const [stop, setStop] = useState("");
   const [walk, setWalk] = useState("3");
@@ -36,32 +38,44 @@ export function Parent() {
     }
     setSaved(true);
   };
-  const field = { fontSize: 20, borderWidth: 1, padding: 12 } as const;
+  const field = { fontSize: 20, borderWidth: 2, borderColor: c.line, borderRadius: radius, padding: 14, color: c.ink, backgroundColor: c.card, minHeight: 56 } as const;
   const leave = row ? leaveByMinutes(row.eta_lo, Number(walk) || 3) : null;
 
   if (!saved) return (
-    <ScrollView contentContainerStyle={{ gap: 14, padding: 16 }}>
+    <Screen>
       <H>Set up your stop</H>
-      <TextInput accessibilityLabel="Bus number" placeholder="Bus number" style={field} value={route} onChangeText={setRoute} />
-      <TextInput accessibilityLabel="Stop" placeholder="Stop" style={field} value={stop} onChangeText={setStop} />
-      <TextInput accessibilityLabel="Walking minutes" placeholder="Walking minutes" keyboardType="number-pad" style={field} value={walk} onChangeText={setWalk} />
-      <Btn label="Save" disabled={!route || !stop} onPress={save} />
-    </ScrollView>
+      <TextInput accessibilityLabel="Bus number" placeholder="Bus number" placeholderTextColor={c.sub} style={field} value={route} onChangeText={setRoute} />
+      <TextInput accessibilityLabel="Stop" placeholder="Stop" placeholderTextColor={c.sub} style={field} value={stop} onChangeText={setStop} />
+      <TextInput accessibilityLabel="Walking minutes" placeholder="Walking minutes" placeholderTextColor={c.sub} keyboardType="number-pad" style={field} value={walk} onChangeText={setWalk} />
+      <Btn primary label="Save" disabled={!route || !stop} onPress={save} />
+    </Screen>
   );
-  if (panel === "alerts") return <ScrollView contentContainerStyle={{ gap: 14, padding: 16 }}><AlertsSettings route={route} stop={stop} /><Btn label="Back" onPress={() => setPanel("")} /></ScrollView>;
-  if (panel === "report") return <ScrollView contentContainerStyle={{ gap: 14, padding: 16 }}><ReportCard route={route} /><Btn label="Back" onPress={() => setPanel("")} /></ScrollView>;
+  if (panel === "alerts") return <Screen><AlertsSettings route={route} stop={stop} /><Btn label="Back" onPress={() => setPanel("")} /></Screen>;
+  if (panel === "report") return <Screen><ReportCard route={route} /><Btn label="Back" onPress={() => setPanel("")} /></Screen>;
+
+  const hasEta = row?.eta_min != null;
   return (
-    <ScrollView contentContainerStyle={{ gap: 14, padding: 16 }}>
-      <H>Bus {route} · stop {stop}</H>
-      {demo && <P>DEMO MODE: scripted scenario, not real data.</P>}
-      <Badge text={sourceLabel(row?.source ?? "NO_DATA")} />
-      <P>{row?.eta_min != null ? `ETA ${row.eta_min} min (${row.eta_lo}–${row.eta_hi})` : "No ETA available"}</P>
-      {row?.stops_away != null && <P>{row.stops_away} stops away</P>}
-      {leave !== null && <P>Leave in about {leave} min</P>}
+    <Screen>
+      <P dim>Bus {route} · stop {stop}</P>
+      {demo && <Card><P>DEMO MODE: scripted scenario, not real data.</P></Card>}
+      <Card tone={row?.source === "LIVE" ? "brand" : undefined}>
+        <Badge text={sourceLabel(row?.source ?? "NO_DATA")} />
+        {hasEta ? (
+          <>
+            <Text accessibilityLabel={`Arrives in about ${row!.eta_min} minutes`}
+              style={{ fontSize: type.hero, fontWeight: "900", color: row?.source === "LIVE" ? "#1A1A1A" : c.ink }}>
+              {row!.eta_min}<Text style={{ fontSize: type.title }}> min</Text>
+            </Text>
+            <P>Range {row!.eta_lo}–{row!.eta_hi} min</P>
+          </>
+        ) : <P>No ETA available yet.</P>}
+        {row?.stops_away != null && <P>{row.stops_away} stops away</P>}
+      </Card>
+      {leave !== null && <Card><H>Leave in about {leave} min</H></Card>}
       <Btn label="Alert settings" onPress={() => setPanel("alerts")} />
       <Btn label="Route report card" onPress={() => setPanel("report")} />
       <Btn danger label="Bus didn't come" onPress={async () => { await sendReport(route, stop, "no_show"); Alert.alert("Thanks", "Report sent (anonymous)."); }} />
       <Btn label="Bus came early" onPress={async () => { await sendReport(route, stop, "early"); Alert.alert("Thanks", "Report sent (anonymous)."); }} />
-    </ScrollView>
+    </Screen>
   );
 }

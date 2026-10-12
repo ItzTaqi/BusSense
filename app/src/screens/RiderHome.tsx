@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { View } from "react-native";
-import { Btn, H, P } from "../components/Ui";
+import { Btn, Card, H, P, Screen } from "../components/Ui";
 import { t } from "../i18n";
 import { useApp } from "../state/store";
 import { endTrip, startTrip } from "../lib/tripService";
@@ -14,11 +13,13 @@ export function RiderHome({ go }: { go: (s: string) => void }) {
     : riderStatus === "listening" ? t("rider.status.listening", lang)
     : riderStatus === "paused" ? "Paused" : t("rider.status.sleeping", lang);
   return (
-    <View style={{ gap: 14, padding: 16 }}>
-      <H>{label}</H>
-      {riderStatus === "listening" && <P>● Listening</P>}
-      <P>A bus is shown only when 3 or more riders are on it.</P>
-      <Btn label="I'm on the bus" onPress={async () => {
+    <Screen>
+      <Card tone={riderStatus === "onBus" ? "brand" : undefined}>
+        <H>{label}</H>
+        {riderStatus === "listening" && <P>● Listening</P>}
+        <P dim>A bus is shown only when 3 or more riders are on it.</P>
+      </Card>
+      <Btn primary label="I'm on the bus" onPress={async () => {
         try { setErr(""); const tok = await startTrip(declaredBus, (p) => set({ riderStatus: p >= UPLOAD_THRESHOLD ? "onBus" : "listening" })); set({ riderStatus: "listening", tripToken: tok }); }
         catch (e) { setErr(String(e)); }
       }} />
@@ -27,6 +28,6 @@ export function RiderHome({ go }: { go: (s: string) => void }) {
       <Btn label="End trip" onPress={async () => { await endTrip(); set({ riderStatus: "sleeping", kRiders: 0 }); go("receipt"); }} />
       <Btn label="Privacy center" onPress={() => go("privacy")} />
       <Btn label="Record data (logging build)" onPress={() => go("record")} />
-    </View>
+    </Screen>
   );
 }
