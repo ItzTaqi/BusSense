@@ -14,7 +14,7 @@ export type SettingsPage = "" | "privacy" | "receipt" | "record" | "notification
 // Rider-only rows (receipt, record) are hidden for parents.
 export function Settings({ page, setPage, onAddChild }: { page: SettingsPage; setPage: (p: SettingsPage) => void; onAddChild: () => void }) {
   const c = useTheme();
-  const { mode, lang, demo, set, children, removeChild } = useApp();
+  const { mode, lang, demo, set, children, removeChild, appearance, setAppearance } = useApp();
 
   const Row = ({ icon, label, hint, onPress, right }: { icon: IconName; label: string; hint?: string; onPress: () => void; right?: string }) => (
     <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress}
@@ -86,6 +86,22 @@ export function Settings({ page, setPage, onAddChild }: { page: SettingsPage; se
           <Row icon="add-circle" label="Add a child" onPress={onAddChild} />
         </Group>
       )}
+      <View style={{ gap: 10 }}>
+        <Text style={{ fontSize: 13, fontWeight: "700", letterSpacing: 0.6, color: c.sub, textTransform: "uppercase" }}>Appearance</Text>
+        <View accessibilityRole="radiogroup" style={{ flexDirection: "row", padding: 4, borderRadius: 16, backgroundColor: c.cardAlt }}>
+          {([["system", "System", "phone-portrait"], ["light", "Light", "sunny"], ["dark", "Dark", "moon"]] as const).map(([key, name, icon]) => {
+            const on = appearance === key;
+            return (
+              <Pressable key={key} accessibilityRole="radio" accessibilityLabel={`${name} appearance`} accessibilityState={{ selected: on }} onPress={() => setAppearance(key)}
+                style={{ flex: 1, minHeight: 48, borderRadius: 12, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, backgroundColor: on ? c.brand : "transparent" }}>
+                <Ionicons name={icon} size={17} color={on ? c.onBrand : c.sub} />
+                <Text style={{ fontSize: 14, fontWeight: "700", color: on ? c.onBrand : c.ink }}>{name}</Text>
+              </Pressable>
+            );
+          })}
+        </View>
+        <Text style={{ fontSize: 12, lineHeight: 17, color: c.sub }}>{appearance === "system" ? "Matches your phone's light or dark setting." : `Always ${appearance}, whatever your phone is set to.`}</Text>
+      </View>
       <Group>
         <Row icon="language" label="Language" right={lang === "en" ? "English" : "Español"} onPress={() => set({ lang: lang === "en" ? "es" : "en" })} />
         <Sep />

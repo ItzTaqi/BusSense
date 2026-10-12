@@ -1,4 +1,6 @@
 import { useColorScheme } from "react-native";
+import { resolveScheme } from "./lib/appearance";
+import { useApp } from "./state/store";
 
 // GoNC design tokens: white surfaces, blue accent (plus one red for destructive actions).
 // Status is never color: it is icon + text + fill style. See /design/DESIGN.md.
@@ -15,7 +17,12 @@ const dark: typeof light = {
   danger: "#FF8FA6", shadow: "#000000", heroA: "#0B1F73", heroB: "#2F5FFF",
 };
 export type Theme = typeof light;
-export const useTheme = (): Theme => (useColorScheme() === "dark" ? dark : light);
+// Follows the device unless the person picked Light or Dark in Settings.
+export const useTheme = (): Theme => {
+  const system = useColorScheme();
+  const pref = useApp((s) => s.appearance);
+  return resolveScheme(pref, system) === "dark" ? dark : light;
+};
 
 export const space = { xs: 6, sm: 10, md: 16, lg: 24, xl: 32 };
 export const type = { body: 16, label: 13, title: 22, hero: 56 };

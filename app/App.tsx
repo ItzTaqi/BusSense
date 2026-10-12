@@ -25,13 +25,13 @@ const PARENT_TABS: Tab[] = [
 ];
 
 export default function App() {
-  const { mode, demo, set, loadChildren } = useApp();
+  const { mode, demo, set, loadChildren, loadAppearance } = useApp();
   const c = useTheme();
   const [tab, setTab] = useState("home");
   const [settingsPage, setSettingsPage] = useState<SettingsPage>("");
   const [stage, setStage] = useState<"welcome" | "role" | "onboarding" | "parentSetup">("welcome");
   const [addingChild, setAddingChild] = useState(false);
-  useEffect(() => { ensureAnonSession().catch(() => {}); void loadChildren().then(() => setTab("board")); }, []);
+  useEffect(() => { ensureAnonSession().catch(() => {}); void loadAppearance(); void loadChildren().then(() => setTab("board")); }, []);
 
   const go = (s: string) => {
     if (s === "receipt" || s === "privacy" || s === "record") { setSettingsPage(s); setTab("settings"); }

@@ -21,7 +21,7 @@ Source of truth in code: `app/src/theme.ts` and `app/src/components/Ui.tsx`.
 3. **Motion:** one pulse (LIVE dot), off when the system "Reduce Motion" setting is on.
 4. **Layout:** all text, titles, cards and heroes are center-aligned. Form rows in Alerts keep label left, switch right.
 5. **Footer** "Community supplement – not the official WCPSS tracker." on every screen except the minimal home page.
-6. **Dark mode** follows the phone setting.
+6. **Light / dark:** Settings > Appearance offers System (default, follows the phone), Light and Dark. The choice is saved on the phone. `app.json` uses `userInterfaceStyle: automatic` so iOS and Android pass the device setting through.
 
 ## Type scale
 hero 56 (ETA) · title 22 · body 16 · label 13 · tab 11.
