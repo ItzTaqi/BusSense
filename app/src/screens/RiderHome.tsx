@@ -5,7 +5,7 @@ import { UPLOAD_THRESHOLD } from "../classifier/predict";
 import { t } from "../i18n";
 import { endTrip, startTrip } from "../lib/tripService";
 import { useApp } from "../state/store";
-import { palette } from "../theme";
+
 
 export function RiderHome({ go }: { go: (s: string) => void }) {
   const { riderStatus, kRiders, declaredBus, lang, set } = useApp();
@@ -18,9 +18,9 @@ export function RiderHome({ go }: { go: (s: string) => void }) {
   return (
     <Screen>
       <Hero icon={listening ? "radio" : "moon"}>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-          {listening && <PulseDot color={palette.mint} />}
-          <Text accessibilityRole="header" style={{ fontSize: 34, fontWeight: "900", color: "#fff", letterSpacing: -1 }}>{label}</Text>
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10 }}>
+          {listening && <PulseDot color="#FFFFFF" />}
+          <Text accessibilityRole="header" style={{ fontSize: 34, fontWeight: "900", color: "#fff", letterSpacing: -1, textAlign: "center" }}>{label}</Text>
         </View>
         <P color="rgba(255,255,255,0.85)">A bus is shown to parents only when 3 or more riders are on it. Never you.</P>
         {riderStatus === "onBus" && <Badge text="LIVE" />}

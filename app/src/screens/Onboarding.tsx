@@ -31,7 +31,7 @@ export function Onboarding() {
     set({ mode: "rider", birthYear: Number(year), declaredBus: bus });
   };
   const c = useTheme();
-  const field = { fontSize: 20, borderWidth: 2, borderColor: c.line, borderRadius: radius, padding: 14, color: c.ink, backgroundColor: c.card, minHeight: 56 } as const;
+  const field = { textAlign: "center" as const, fontSize: 20, borderWidth: 2, borderColor: c.line, borderRadius: radius, padding: 14, color: c.ink, backgroundColor: c.card, minHeight: 56 } as const;
 
   return (
     <Screen>

@@ -14,7 +14,7 @@ import { Receipt } from "./src/screens/Receipt";
 import { Record } from "./src/screens/Record";
 import { RiderHome } from "./src/screens/RiderHome";
 import { useApp } from "./src/state/store";
-import { palette, useTheme } from "./src/theme";
+import { useTheme } from "./src/theme";
 
 const RIDER_TABS: Tab[] = [
   { key: "home", label: "Ride", icon: "bus" }, { key: "receipt", label: "Receipt", icon: "receipt" },
@@ -47,9 +47,9 @@ export default function App() {
   const pill = (label: string, icon: keyof typeof Ionicons.glyphMap, on: boolean, onPress: () => void, hint?: string) => (
     <Pressable accessibilityRole="button" accessibilityLabel={hint ?? label} accessibilityState={{ selected: on }} onPress={onPress}
       style={{ flexDirection: "row", alignItems: "center", gap: 6, minHeight: 40, paddingHorizontal: 12, borderRadius: 999,
-        backgroundColor: on ? palette.sun : "rgba(255,255,255,0.14)" }}>
-      <Ionicons name={icon} size={18} color={on ? palette.navy : "#fff"} />
-      <Text style={{ fontSize: 15, fontWeight: "800", color: on ? palette.navy : "#fff" }}>{label}</Text>
+        backgroundColor: on ? "#FFFFFF" : "rgba(255,255,255,0.14)" }}>
+      <Ionicons name={icon} size={18} color={on ? "#000" : "#fff"} />
+      <Text style={{ fontSize: 15, fontWeight: "800", color: on ? "#000" : "#fff" }}>{label}</Text>
     </Pressable>
   );
   return (
@@ -58,14 +58,14 @@ export default function App() {
       {welcome ? <SafeAreaView /> : <LinearGradient colors={[c.heroA, c.heroB]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
         <SafeAreaView>
           <View style={{ paddingHorizontal: 16, paddingTop: 6, paddingBottom: 12, gap: 10 }}>
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-              <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: palette.sun, alignItems: "center", justifyContent: "center" }}>
-                <Ionicons name="bus" size={24} color={palette.navy} />
+            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10 }}>
+              <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: "#FFFFFF", alignItems: "center", justifyContent: "center" }}>
+                <Ionicons name="bus" size={24} color="#000" />
               </View>
               <Text accessibilityRole="header" style={{ fontSize: 26, fontWeight: "900", color: "#fff", letterSpacing: -0.5 }}>GoYellow</Text>
             </View>
             {mode && (
-              <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
+              <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap", justifyContent: "center" }}>
                 {pill(t("mode.rider", lang), "person", mode === "rider", () => switchMode("rider"))}
                 {pill(t("mode.parent", lang), "people", mode === "parent", () => switchMode("parent"))}
                 {pill(demo ? "Demo on" : "Demo", "play-circle", demo, () => { set({ demo: !demo }); if (!demo) switchMode("parent"); }, "Toggle demo mode")}

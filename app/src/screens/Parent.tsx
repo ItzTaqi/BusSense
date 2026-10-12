@@ -38,7 +38,7 @@ export function Parent({ tab }: { tab: string }) {
     }
     setSaved(true);
   };
-  const field = { fontSize: 20, borderWidth: 2, borderColor: c.line, borderRadius: radius, padding: 14, color: c.ink, backgroundColor: c.card, minHeight: 56 } as const;
+  const field = { textAlign: "center" as const, fontSize: 20, borderWidth: 2, borderColor: c.line, borderRadius: radius, padding: 14, color: c.ink, backgroundColor: c.card, minHeight: 56 } as const;
   const leave = row ? leaveByMinutes(row.eta_lo, Number(walk) || 3) : null;
 
   if (!saved) return (
@@ -64,7 +64,7 @@ export function Parent({ tab }: { tab: string }) {
         {hasEta ? (
           <>
             <Text accessibilityLabel={`Arrives in about ${row!.eta_min} minutes`}
-              style={{ fontSize: type.hero, fontWeight: "900", color: "#fff", letterSpacing: -2, lineHeight: 80 }}>
+              style={{ fontSize: type.hero, fontWeight: "900", color: "#fff", letterSpacing: -2, lineHeight: 80, textAlign: "center" }}>
               {row!.eta_min}<Text style={{ fontSize: type.title, letterSpacing: 0 }}> min</Text>
             </Text>
             <P color="rgba(255,255,255,0.9)">Likely between {row!.eta_lo} and {row!.eta_hi} min</P>
@@ -74,7 +74,7 @@ export function Parent({ tab }: { tab: string }) {
       </Hero>
       {leave !== null && (
         <Card tone="brand" icon="walk" title={leave === 0 ? "Leave now" : `Leave in about ${leave} min`}>
-          <P color="#0B1B3F">Includes {walk} min walk and a 2 min cushion.</P>
+          <P color={c.onBrand}>Includes {walk} min walk and a 2 min cushion.</P>
         </Card>
       )}
       <Card icon="megaphone" title="Tell other families">
