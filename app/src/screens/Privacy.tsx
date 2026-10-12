@@ -12,8 +12,7 @@ export function Privacy() {
   ]);
   return (
     <Screen>
-      <H>Privacy center</H>
-      <Card>
+      <Card icon="shield-checkmark" title="Privacy center">
       <P>• A bus is shown only when 3+ riders are on it.</P>
       <P>• Your location uses a random trip code, never your name or account.</P>
       <P>• Listening happens only in your bus windows and shows "Listening".</P>
@@ -21,7 +20,7 @@ export function Privacy() {
       <P>• Parents see the bus position delayed 15 s and rounded to 50 m.</P>
       <P>• No ads, no analytics, no chat.</P>
       </Card>
-      <Btn danger label="Delete my account" onPress={del} />
+      <Btn danger icon="trash" label="Delete my account" onPress={del} />
     </Screen>
   );
 }

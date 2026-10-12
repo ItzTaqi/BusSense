@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { TextInput } from "react-native";
-import { Btn, Card, H, P, Screen } from "../components/Ui";
+import { Btn, Card, H, Hero, P, ProgressBar, Screen } from "../components/Ui";
 import { radius, useTheme } from "../theme";
 import { canEnableSensing } from "../lib/tripToken";
 import { supabase } from "../lib/supabase";
@@ -35,22 +35,22 @@ export function Onboarding() {
 
   return (
     <Screen>
-      <P dim>Step {step + 1} of 5</P>
+      <ProgressBar step={step + 1} total={5} />
       {step === 0 && (<>
-        <H>How old are you?</H>
+        <Hero icon="happy"><H color="#fff">How old are you?</H></Hero>
         <P>Birth year (e.g. 2011). Riders under 13 can only use Parent mode.</P>
         <TextInput accessibilityLabel="Birth year" style={field} keyboardType="number-pad" value={year} onChangeText={setYear} maxLength={4} />
-        <Btn primary label="Next" disabled={year.length !== 4} onPress={() => (can ? setStep(1) : set({ mode: "parent", birthYear: Number(year) }))} />
+        <Btn primary icon="arrow-forward" label="Next" disabled={year.length !== 4} onPress={() => (can ? setStep(1) : set({ mode: "parent", birthYear: Number(year) }))} />
       </>)}
       {step === 1 && (<>
-        <H>Your bus</H>
+        <Hero icon="bus"><H color="#fff">Your bus</H></Hero>
         <TextInput accessibilityLabel="School" placeholder="School" style={field} value={school} onChangeText={setSchool} />
         <TextInput accessibilityLabel="Bus number" placeholder="Bus number" style={field} value={bus} onChangeText={setBus} />
         <TextInput accessibilityLabel="Stop" placeholder="Your stop" style={field} value={stop} onChangeText={setStop} />
         <Btn primary label="Next" disabled={!school || !bus} onPress={() => setStep(2)} />
       </>)}
       {step === 2 && (<>
-        <H>Bus windows</H>
+        <Hero icon="time"><H color="#fff">Bus windows</H></Hero>
         <P>The app only listens during these times (24 h, HH:MM).</P>
         <P>Morning</P>
         <TextInput accessibilityLabel="Morning start" style={field} value={amStart} onChangeText={setAmStart} />
@@ -61,14 +61,14 @@ export function Onboarding() {
         <Btn primary label="Next" onPress={() => setStep(3)} />
       </>)}
       {step === 3 && (<>
-        <H>Location, explained</H>
+        <Hero icon="location"><H color="#fff">Location, explained</H></Hero>
         <Card><P>GoYellow uses your location only inside your bus windows. It is tied to a random trip code, never your name.</P><P>A bus is shown only when 3 or more riders agree, and your points are deleted when the trip ends.</P></Card>
         <Btn primary label="I understand" onPress={() => setStep(4)} />
       </>)}
       {step === 4 && (<>
-        <H>Motion sensors</H>
-        <P>The accelerometer helps tell a bus from a car. It never leaves your phone except as a summary number.</P>
-        <Btn primary label="Finish setup" onPress={finish} />
+        <Hero icon="pulse"><H color="#fff">Motion sensors</H></Hero>
+        <Card icon="phone-portrait" title="Stays on your phone"><P>The accelerometer helps tell a bus from a car. It never leaves your phone except as a summary number.</P></Card>
+        <Btn primary icon="checkmark-circle" label="Finish setup" onPress={finish} />
       </>)}
     </Screen>
   );

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Alert, Text, TextInput } from "react-native";
-import { Badge, Btn, Card, H, P, Screen } from "../components/Ui";
+import { Badge, Btn, Card, H, Hero, P, Screen } from "../components/Ui";
+import { RouteTrack } from "../components/RouteTrack";
 import { sendReport, subscribeStatus, StatusRow } from "../lib/api";
 import { leaveByMinutes, sourceLabel } from "../lib/leaveBy";
 import { DEMO_STEPS } from "../demo/scenario";
@@ -10,7 +11,7 @@ import { radius, type, useTheme } from "../theme";
 import { AlertsSettings } from "./AlertsSettings";
 import { ReportCard } from "./ReportCard";
 
-export function Parent() {
+export function Parent({ tab }: { tab: string }) {
   const demo = useApp((s) => s.demo);
   const c = useTheme();
   const [route, setRoute] = useState("");
@@ -19,7 +20,6 @@ export function Parent() {
   const [saved, setSaved] = useState(false);
   const [row, setRow] = useState<StatusRow | null>(null);
   const [step, setStep] = useState(0);
-  const [panel, setPanel] = useState<"" | "alerts" | "report">("");
 
   useEffect(() => {
     if (!demo) return;
@@ -50,32 +50,37 @@ export function Parent() {
       <Btn primary label="Save" disabled={!route || !stop} onPress={save} />
     </Screen>
   );
-  if (panel === "alerts") return <Screen><AlertsSettings route={route} stop={stop} /><Btn label="Back" onPress={() => setPanel("")} /></Screen>;
-  if (panel === "report") return <Screen><ReportCard route={route} /><Btn label="Back" onPress={() => setPanel("")} /></Screen>;
+  if (tab === "alerts") return <Screen><AlertsSettings route={route} stop={stop} /></Screen>;
+  if (tab === "report") return <Screen><ReportCard route={route} /></Screen>;
 
   const hasEta = row?.eta_min != null;
+  const src = sourceLabel(row?.source ?? "NO_DATA");
   return (
     <Screen>
-      <P dim>Bus {route} · stop {stop}</P>
-      {demo && <Card><P>DEMO MODE: scripted scenario, not real data.</P></Card>}
-      <Card tone={row?.source === "LIVE" ? "brand" : undefined}>
-        <Badge text={sourceLabel(row?.source ?? "NO_DATA")} />
+      {demo && <Card tone="alt" icon="play-circle" title="Demo mode"><P dim>Scripted scenario, not real data.</P></Card>}
+      <Hero icon="bus">
+        <P color="rgba(255,255,255,0.8)">Bus {route} · stop {stop}</P>
+        <Badge text={src} />
         {hasEta ? (
           <>
             <Text accessibilityLabel={`Arrives in about ${row!.eta_min} minutes`}
-              style={{ fontSize: type.hero, fontWeight: "900", color: row?.source === "LIVE" ? "#1A1A1A" : c.ink }}>
-              {row!.eta_min}<Text style={{ fontSize: type.title }}> min</Text>
+              style={{ fontSize: type.hero, fontWeight: "900", color: "#fff", letterSpacing: -2, lineHeight: 80 }}>
+              {row!.eta_min}<Text style={{ fontSize: type.title, letterSpacing: 0 }}> min</Text>
             </Text>
-            <P>Range {row!.eta_lo}–{row!.eta_hi} min</P>
+            <P color="rgba(255,255,255,0.9)">Likely between {row!.eta_lo} and {row!.eta_hi} min</P>
           </>
-        ) : <P>No ETA available yet.</P>}
-        {row?.stops_away != null && <P>{row.stops_away} stops away</P>}
+        ) : <P color="#fff">No ETA yet. We only show a bus when 3+ riders are on it.</P>}
+        <RouteTrack stopsAway={row?.stops_away ?? null} />
+      </Hero>
+      {leave !== null && (
+        <Card tone="brand" icon="walk" title={leave === 0 ? "Leave now" : `Leave in about ${leave} min`}>
+          <P color="#0B1B3F">Includes {walk} min walk and a 2 min cushion.</P>
+        </Card>
+      )}
+      <Card icon="megaphone" title="Tell other families">
+        <Btn danger icon="close-circle" label="Bus didn't come" onPress={async () => { await sendReport(route, stop, "no_show"); Alert.alert("Thanks", "Report sent (anonymous)."); }} />
+        <Btn icon="flash" label="Bus came early" onPress={async () => { await sendReport(route, stop, "early"); Alert.alert("Thanks", "Report sent (anonymous)."); }} />
       </Card>
-      {leave !== null && <Card><H>Leave in about {leave} min</H></Card>}
-      <Btn label="Alert settings" onPress={() => setPanel("alerts")} />
-      <Btn label="Route report card" onPress={() => setPanel("report")} />
-      <Btn danger label="Bus didn't come" onPress={async () => { await sendReport(route, stop, "no_show"); Alert.alert("Thanks", "Report sent (anonymous)."); }} />
-      <Btn label="Bus came early" onPress={async () => { await sendReport(route, stop, "early"); Alert.alert("Thanks", "Report sent (anonymous)."); }} />
     </Screen>
   );
 }

@@ -9,8 +9,7 @@ export function Receipt() {
   useEffect(() => { if (token) getReceipt(token).then(setR); }, [token]);
   return (
     <Screen>
-      <H>Trip receipt</H>
-      <Card>
+      <Card icon="receipt" title="Trip receipt">
         <P>{r ? (r.published ? "A bus was published." : "No bus was published.") : "Loading…"}</P>
         <P>Most riders seen: {r?.max_riders ?? "–"}</P>
         <P>{r ? `${r.points_kept} location points kept` : ""}</P>

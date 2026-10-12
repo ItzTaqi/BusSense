@@ -8,7 +8,7 @@ export function ReportCard({ route }: { route: string }) {
   useEffect(() => { supabase.functions.invoke(`route-report/${encodeURIComponent(route)}/report?weeks=4`, { method: "GET" }).then(({ data }) => setR(data)); }, [route]);
   return (
     <View style={{ gap: 14 }}>
-      <H>Report card · Bus {route}</H>
+      <Card icon="stats-chart" title={`Report card · Bus ${route}`} />
       <P dim>Last {r?.weeks ?? 4} weeks, from parent reports only:</P>
       <Card>
         <P>"Bus didn't come" reports: {r?.no_show_reports ?? "–"}</P>

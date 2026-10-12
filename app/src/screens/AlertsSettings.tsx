@@ -16,7 +16,7 @@ export function AlertsSettings({ route, stop }: { route: string; stop: string })
   };
   return (
     <View style={{ gap: 14 }}>
-      <H>Alerts</H>
+      <Card icon="notifications" title="Alerts" />
       <P>At most one alert per stop every 5 minutes.</P>
       <Card>
       {KEYS.map(([k, label]) => (

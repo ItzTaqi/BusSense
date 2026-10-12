@@ -8,13 +8,13 @@ export function Record() {
   const [err, setErr] = useState("");
   return (
     <Screen>
-      <H>Logging build</H>
+      <Card icon="recording" title="Logging build" />
       <P>Dev data for training. Only record with permission. Deleted after evaluation.</P>
       <Card><P>Label: {label}</P></Card>
       {(["bus", "car", "walk"] as const).map((l) => <Btn key={l} label={l} disabled={on} onPress={() => setLabel(l)} />)}
       <P>{on ? "● Recording" : "Not recording"}</P>
       {err ? <P>{err}</P> : null}
-      <Btn primary label={on ? "Stop" : "Start recording"} onPress={async () => {
+      <Btn primary icon={on ? "stop-circle" : "radio-button-on"} label={on ? "Stop" : "Start recording"} onPress={async () => {
         try { setErr(""); if (on) { await stopRecording(); setOn(false); } else { await startRecording(label); setOn(true); } }
         catch (e) { setErr(String(e)); }
       }} />
