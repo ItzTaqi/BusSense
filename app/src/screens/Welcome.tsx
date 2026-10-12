@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { PlusJakartaSans_500Medium, PlusJakartaSans_700Bold, PlusJakartaSans_800ExtraBold, useFonts } from "@expo-google-fonts/plus-jakarta-sans";
 import { LinearGradient } from "expo-linear-gradient";
 import { Pressable, SafeAreaView, ScrollView, Text, View } from "react-native";
 import { useTheme } from "../theme";
@@ -12,6 +13,10 @@ const FEATURES: { icon: keyof typeof Ionicons.glyphMap; title: string; text: str
 
 export function Welcome({ onStart }: { onStart: () => void }) {
   const c = useTheme();
+  // Plus Jakarta Sans for the home page only. Custom fonts carry their own weight, so no fontWeight here.
+  const [loaded] = useFonts({ PlusJakartaSans_500Medium, PlusJakartaSans_700Bold, PlusJakartaSans_800ExtraBold });
+  const f = { m: "PlusJakartaSans_500Medium", b: "PlusJakartaSans_700Bold", x: "PlusJakartaSans_800ExtraBold" };
+  if (!loaded) return <LinearGradient colors={[c.heroA, c.heroB]} style={{ flex: 1 }} />; // same background, no font flash
   return (
     <LinearGradient colors={[c.heroA, c.heroB]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
@@ -21,35 +26,34 @@ export function Welcome({ onStart }: { onStart: () => void }) {
               <View style={{ width: 44, height: 44, borderRadius: 14, backgroundColor: "#FFFFFF", alignItems: "center", justifyContent: "center" }}>
                 <Ionicons name="bus" size={26} color="#061A66" />
               </View>
-              <Text accessibilityRole="header" style={{ fontSize: 30, fontWeight: "800", letterSpacing: -1, color: "#FFFFFF" }}>GoNC</Text>
+              <Text accessibilityRole="header" style={{ fontSize: 30, fontFamily: f.x, letterSpacing: -1, color: "#FFFFFF" }}>GoNC</Text>
             </View>
             <View style={{ paddingVertical: 6, paddingHorizontal: 14, borderRadius: 999, backgroundColor: "#FFFFFF" }}>
-              <Text style={{ fontSize: 13, fontWeight: "800", letterSpacing: 0.3, color: "#061A66" }}>Powered by riders · Just for riders</Text>
+              <Text style={{ fontSize: 13, fontFamily: f.x, letterSpacing: 0.3, color: "#061A66" }}>Powered by riders · Just for riders</Text>
             </View>
-            <Text style={{ fontSize: 28, lineHeight: 33, fontWeight: "800", letterSpacing: -0.8, textAlign: "center", color: "#FFFFFF", marginTop: 4 }}>
-              Know where your school bus really is.
+            <Text style={{ fontSize: 18, lineHeight: 26, fontFamily: f.b, letterSpacing: -0.2, textAlign: "center", color: "#FFFFFF", maxWidth: 350, marginTop: 6 }}>
+              Official trackers can miss substitute, activity and late buses. GoNC fills the gap.
             </Text>
-            <Text style={{ fontSize: 15, lineHeight: 22, fontWeight: "500", textAlign: "center", color: "#FFFFFF", maxWidth: 330 }}>
-              GoNC shows your bus on substitute days, late buses and when the official tracker goes quiet. Riders share their bus
-              anonymously, and everyone sees one anonymous bus.
+            <Text style={{ fontSize: 15, lineHeight: 22, fontFamily: f.m, textAlign: "center", color: "#FFFFFF", maxWidth: 340 }}>
+              Riders share their bus anonymously, so when 3 or more are aboard, everyone can see where it is. No bus hardware needed.
             </Text>
           </View>
           <View style={{ gap: 10 }}>
-            {FEATURES.map((f) => (
-              <View key={f.title} style={{ flexDirection: "row", alignItems: "center", gap: 12, padding: 14, borderRadius: 16, backgroundColor: "#FFFFFF" }}>
+            {FEATURES.map((ft) => (
+              <View key={ft.title} style={{ flexDirection: "row", alignItems: "center", gap: 12, padding: 14, borderRadius: 16, backgroundColor: "#FFFFFF" }}>
                 <View accessible={false} style={{ width: 38, height: 38, borderRadius: 19, backgroundColor: "#E4ECFF", alignItems: "center", justifyContent: "center" }}>
-                  <Ionicons name={f.icon} size={20} color="#0F46E6" />
+                  <Ionicons name={ft.icon} size={20} color="#0F46E6" />
                 </View>
                 <View style={{ flex: 1, gap: 2 }}>
-                  <Text style={{ fontSize: 15, fontWeight: "800", color: "#050A1A" }}>{f.title}</Text>
-                  <Text style={{ fontSize: 13, lineHeight: 18, color: "#2B3553" }}>{f.text}</Text>
+                  <Text style={{ fontSize: 15, fontFamily: f.x, color: "#050A1A" }}>{ft.title}</Text>
+                  <Text style={{ fontSize: 13, lineHeight: 18, color: "#2B3553" }}>{ft.text}</Text>
                 </View>
               </View>
             ))}
           </View>
           <Pressable accessibilityRole="button" accessibilityLabel="Get started" onPress={onStart}
             style={({ pressed }) => ({ minHeight: 52, borderRadius: 14, backgroundColor: "#FFFFFF", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, transform: [{ scale: pressed ? 0.98 : 1 }] })}>
-            <Text style={{ fontSize: 16, fontWeight: "800", color: "#061A66" }}>Get started</Text>
+            <Text style={{ fontSize: 16, fontFamily: f.x, color: "#061A66" }}>Get started</Text>
             <Ionicons name="arrow-forward" size={18} color="#061A66" />
           </Pressable>
         </ScrollView>
