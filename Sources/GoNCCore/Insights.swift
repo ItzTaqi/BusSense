@@ -20,6 +20,11 @@ public struct Insights: Equatable, Codable, Sendable {
     public var worstDay: String?
     public var series: [Int]        // "didn't come" per week, oldest -> newest
 
+    public init(weeks: Int, totalNoShow: Int, totalEarly: Int, thisWeek: Int, lastWeek: Int, trend: Trend, worstDay: String?, series: [Int]) {
+        self.weeks = weeks; self.totalNoShow = totalNoShow; self.totalEarly = totalEarly; self.thisWeek = thisWeek; self.lastWeek = lastWeek
+        self.trend = trend; self.worstDay = worstDay; self.series = series
+    }
+
     public static let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
     private static let weekSeconds: TimeInterval = 7 * 24 * 3600
 

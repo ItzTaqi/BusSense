@@ -159,4 +159,10 @@ public final class SupabaseBackend: BackendAPI, @unchecked Sendable {
         try await client.select("bus_status", [.init(name: "route_label", value: "eq.\(route)")])
     }
     public func deleteMyAccount() async throws { try await client.rpcVoid("delete_my_account") }
+    public func registerPushToken(_ hex: String) async throws {
+        _ = try await client.accessToken()
+        guard let uid = await client.userId() else { throw BackendError("Not signed in") }
+        struct Row: Encodable { let id: String; let push_token: String }
+        try await client.upsert("followers", Row(id: uid, push_token: hex), onConflict: "id")
+    }
 }

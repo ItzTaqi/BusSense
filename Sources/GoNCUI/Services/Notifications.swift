@@ -15,9 +15,14 @@ public enum NotificationService {
         default: return .notAsked
         }
     }
+    /// The app target sets this to call `UIApplication.shared.registerForRemoteNotifications()` (see Apps/iOS/GoNCApp.swift),
+    /// so the package itself needs no UIKit.
+    @MainActor public static var onGranted: (() -> Void)?
+
     @discardableResult public static func request() async -> NotificationPermission {
         guard available else { return .unavailable }
         let ok = (try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])) ?? false
+        if ok { await MainActor.run { onGranted?() } }
         return ok ? .granted : .denied
     }
 }

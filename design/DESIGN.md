@@ -1,7 +1,7 @@
 # GoNC design system
 
 **Feel:** minimal, white with a blue accent. Everything is centered.
-Source of truth in code: `app/src/theme.ts` and `app/src/components/Ui.tsx`.
+Source of truth in code: `Sources/GoNCUI/Design/` (Theme.swift, Components.swift, Inputs.swift).
 
 ## Color (white + blue)
 | Token | Light | Dark | Use |
@@ -65,7 +65,7 @@ inset themselves, once. The top inset is applied once, in the header bar. Dark m
 
 ## Terms agreement
 Welcome -> "Get started" -> Privacy and Terms with a checkbox ("I have read and agree") and "Agree and continue" (disabled until ticked)
--> role screen. Acceptance is saved on the phone with a terms version (`app/src/lib/terms.ts`); changing the version asks everyone again.
+-> role screen. Acceptance is saved on the phone with a terms version (`Sources/GoNCCore/Terms.swift`); changing the version asks everyone again.
 Anyone already set up who has not agreed is asked before the app opens.
 
 ## Rider setup
@@ -76,5 +76,9 @@ returns to the home page. The rider home mirrors the parent's Today: date and "<
 Settings > Privacy and Terms > "Delete my account" opens an in-app confirmation (system alerts do not show in the browser preview): what will be
 deleted, what stays (location points are not linked to the account; anonymous reports and timing data), and what to know first. The red
 "Delete everything" button stays off until "I understand this cannot be undone" is ticked. The server is asked first (`delete-account` function);
-only when it confirms are the profile's local copies erased (all `gonc.*` keys, listed in `app/src/lib/localKeys.ts`) and the app returns to the
+only when it confirms are the profile's local copies erased (all `gonc.*` keys, listed in `Sources/GoNCCore/LocalKeys.swift`) and the app returns to the
 home page. If the server can't be reached, nothing is deleted and the button becomes "Try again".
+
+## Swift notes
+Icons are SF Symbols. Colors are dynamic (`Color(light:dark:)`) so the system or the Settings > Appearance choice drives them. Plus Jakarta Sans is bundled
+in `GoNCUI/Resources/Fonts` and used on the home page only. The birthday uses the system graphical date picker. Render every screen with `swift run gonc-snap <dir>`.

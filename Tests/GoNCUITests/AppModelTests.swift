@@ -18,6 +18,8 @@ final class MockBackend: BackendAPI, @unchecked Sendable {
     func tripReceipt(token: String) async throws -> TripReceipt { TripReceipt(published: true, maxRiders: 4, pointsKept: 0) }
     func busStatus(route: String) async throws -> [StatusRow] { [] }
     func deleteMyAccount() async throws { if deleteFails { throw BackendError("offline") }; deleted += 1 }
+    private(set) var pushTokens: [String] = []
+    func registerPushToken(_ hex: String) async throws { pushTokens.append(hex) }
 }
 
 private let kid = Child(id: "c1", name: "Maya", city: "Cary", school: "Cary High School", districtCode: "67500", bus: "412", stop: "Oak Lane", walkMin: 5)
@@ -100,5 +102,11 @@ private let kid = Child(id: "c1", name: "Maya", city: "Cary", school: "Cary High
         #expect(m.child?.id == "demo" && m.children == [kid])
         m.demo = false
         #expect(m.child == kid)
+    }
+    @Test func pushTokenIsRegisteredWithTheBackend() async throws {
+        let (m, b, _) = make()
+        m.registerPushToken("abc123")
+        try await Task.sleep(nanoseconds: 100_000_000)
+        #expect(b.pushTokens == ["abc123"])
     }
 }

@@ -5,7 +5,7 @@ What the research found (October 2026):
 - Each NC district that uses Here Comes the Bus (Synovia) has its **own district code**, set by the district. Families sign up with
   the code plus a student ID. The code identifies the district's tracking system; it does **not** identify a bus,
   so the app still asks for a bus number separately.
-- No statewide list exists. The codes in `app/src/data/districts.ts` come from district/vendor pages. **Verify each with the
+- No statewide list exists. The codes in `Sources/GoNCCore/Districts.swift` come from district/vendor pages. **Verify each with the
   district's transportation office before relying on it.**
 
 | District | Code | Source |

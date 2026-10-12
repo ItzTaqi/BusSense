@@ -1,20 +1,11 @@
 name: ci
 on: [push, pull_request]
 jobs:
-  worker:
-    runs-on: ubuntu-latest
+  swift:
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with: { python-version: "3.11" }
-      - run: pip install pytest ruff numpy scipy networkx scikit-learn shapely pyproj
-      - run: ruff check worker
-      - run: pytest worker
-  app:
-    runs-on: ubuntu-latest
-    if: hashFiles('app/package.json') != ''
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 22 }
-      - run: cd app && npm ci && npx tsc --noEmit && npx vitest run
+      - run: swift --version
+      - run: swift build
+      - run: swift test
+      - run: swift run gonc-sim adversarial 20

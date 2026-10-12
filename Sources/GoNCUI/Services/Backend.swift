@@ -44,6 +44,8 @@ public protocol BackendAPI: Sendable {
     func tripReceipt(token: String) async throws -> TripReceipt
     func busStatus(route: String) async throws -> [StatusRow]
     func deleteMyAccount() async throws
+    /// Hex APNs device token, so the dispatcher can alert this phone. Stored with the parent's follows (no name, no location).
+    func registerPushToken(_ hex: String) async throws
 }
 
 public struct BackendError: Error, Equatable, Sendable { public var message: String; public init(_ m: String) { message = m } }
@@ -61,4 +63,5 @@ public struct OfflineBackend: BackendAPI {
     public func tripReceipt(token: String) async throws -> TripReceipt { try fail() }
     public func busStatus(route: String) async throws -> [StatusRow] { try fail() }
     public func deleteMyAccount() async throws { try fail() }
+    public func registerPushToken(_ hex: String) async throws { try fail() }
 }

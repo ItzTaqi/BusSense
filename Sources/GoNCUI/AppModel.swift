@@ -127,6 +127,8 @@ public final class AppModel {
         riderStatus = .sleeping; kRiders = 0; tripStartedAt = nil
         tab = .settings; settingsPath = [.rides]
     }
+    /// Called with the hex device token when the phone registers for remote notifications (see Apps/iOS/GoNCApp.swift).
+    public func registerPushToken(_ hex: String) { Task { try? await backend.registerPushToken(hex) } }
     public func toggleNotRidingToday() { riderStatus = riderStatus == .paused ? .sleeping : .paused }
     public func clearRides() { rides = []; save(rides, LocalKeys.rides) }
 
