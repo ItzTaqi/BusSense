@@ -1,22 +1,21 @@
 # GoYellow design system
 
-**Feel:** minimal, high-contrast, black and white. Everything is centered.
+**Feel:** minimal, white with a blue accent. Everything is centered.
 Source of truth in code: `app/src/theme.ts` and `app/src/components/Ui.tsx`.
 
-## Color (monochrome)
+## Color (white + blue)
 | Token | Light | Dark | Use |
 |---|---|---|---|
-| bg | `#FFFFFF` | `#000000` | screen background |
-| card / cardAlt | `#FFFFFF` / `#F2F2F2` | `#121212` / `#1E1E1E` | surfaces |
-| ink | `#000000` | `#FFFFFF` | text, icons, selected states |
-| sub | `#5A5A5A` | `#A8A8A8` | secondary text |
-| line | `#D9D9D9` | `#2E2E2E` | borders |
-| brand / onBrand | `#000000` / `#FFFFFF` | `#FFFFFF` / `#000000` | primary button, selected tab, logo |
-| hero | `#000000` to `#3A3A3A` | `#1A1A1A` to `#3D3D3D` | dark gradient cards (content always white) |
-| danger | `#B00020` | `#FF6B81` | "Bus didn't come", delete (the only hue) |
+| bg / card | `#FFFFFF` | `#0A1020` / `#121A33` | surfaces (white is the main color) |
+| cardAlt | `#F1F6FF` | `#1A2547` | tinted panels |
+| ink / sub | `#0B1220` / `#5B6B8C` | `#F2F6FF` / `#9DB0DC` | text |
+| line | `#DCE6F7` | `#26335C` | borders |
+| brand (accent) | `#1F6BFF` | `#4D8DFF` | primary button, selected tab, logo, progress |
+| hero | `#1F6BFF` to `#0B3FBF` | `#1747B8` to `#0B2A73` | blue gradient cards (content always white) |
+| danger | `#C62145` | `#FF7B94` | "Bus didn't come", delete (the only other hue) |
 
 ## Rules
-1. **Status is never color.** Source badge = icon + text + fill style:
+1. **Status is never color alone.** Source badge = icon + text + fill style:
    LIVE solid fill + pulsing dot, RECENT outline + clock, ESTIMATE dashed outline + analytics icon, NO DATA faint fill + help icon.
 2. **Touch targets** at least 56 pt (buttons) and 52 pt (tabs). Body text 18 pt, scales with system text size.
 3. **Motion:** one pulse (LIVE dot), off when the system "Reduce Motion" setting is on.

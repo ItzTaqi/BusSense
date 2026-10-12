@@ -37,6 +37,9 @@ PYTHONPATH=worker .venv/bin/python -m classifier.make_synthetic   # SYNTHETIC da
 ```
 
 ## Honest status
+* School dropdown data (`app/src/data/schools.json`) comes from OpenStreetMap for 12 Wake County cities (ODbL). It is incomplete
+  and mixes public and private schools; students can choose "My school isn't listed". Replace it with an official
+  NC DPI/NCES list before any real use.
 * The bundled classifier `app/src/classifier/model.json` is a **synthetic placeholder** (`synthetic_placeholder: true`).
   Its metrics mean nothing. Record real bus/car/walk trips with the in-app logging build, then retrain with
   `worker/classifier/train.py`, regenerate vectors with `make_vectors.py`.

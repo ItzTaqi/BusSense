@@ -115,7 +115,7 @@ export const ProgressBar = ({ step, total }: { step: number; total: number }) =>
   return (
     <View accessible accessibilityLabel={`Step ${step} of ${total}`} style={{ flexDirection: "row", gap: 6 }}>
       {Array.from({ length: total }, (_, i) => (
-        <View key={i} style={{ flex: 1, height: 8, borderRadius: 4, backgroundColor: i < step ? c.ink : c.line }} />
+        <View key={i} style={{ flex: 1, height: 8, borderRadius: 4, backgroundColor: i < step ? c.brand : c.line }} />
       ))}
     </View>
   );

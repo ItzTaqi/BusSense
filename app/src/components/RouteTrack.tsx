@@ -15,7 +15,7 @@ export function RouteTrack({ stopsAway }: { stopsAway: number | null }) {
             <View key={i} style={{ flexDirection: "row", alignItems: "center", flex: last ? undefined : 1, flexShrink: last ? 0 : 1 }}>
               {i === 0 ? (
                 <View style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: onHero.fg, alignItems: "center", justifyContent: "center" }}>
-                  <Ionicons name="bus" size={20} color="#000" />
+                  <Ionicons name="bus" size={20} color="#0B3FBF" />
                 </View>
               ) : last ? (
                 <View style={{ width: 36, height: 36, borderRadius: 18, borderWidth: 2, borderColor: onHero.fg, alignItems: "center", justifyContent: "center" }}>

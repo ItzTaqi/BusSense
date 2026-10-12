@@ -48,8 +48,8 @@ export default function App() {
     <Pressable accessibilityRole="button" accessibilityLabel={hint ?? label} accessibilityState={{ selected: on }} onPress={onPress}
       style={{ flexDirection: "row", alignItems: "center", gap: 6, minHeight: 40, paddingHorizontal: 12, borderRadius: 999,
         backgroundColor: on ? "#FFFFFF" : "rgba(255,255,255,0.14)" }}>
-      <Ionicons name={icon} size={18} color={on ? "#000" : "#fff"} />
-      <Text style={{ fontSize: 15, fontWeight: "800", color: on ? "#000" : "#fff" }}>{label}</Text>
+      <Ionicons name={icon} size={18} color={on ? "#0B3FBF" : "#fff"} />
+      <Text style={{ fontSize: 15, fontWeight: "800", color: on ? "#0B3FBF" : "#fff" }}>{label}</Text>
     </Pressable>
   );
   return (
@@ -60,7 +60,7 @@ export default function App() {
           <View style={{ paddingHorizontal: 16, paddingTop: 6, paddingBottom: 12, gap: 10 }}>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10 }}>
               <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: "#FFFFFF", alignItems: "center", justifyContent: "center" }}>
-                <Ionicons name="bus" size={24} color="#000" />
+                <Ionicons name="bus" size={24} color="#0B3FBF" />
               </View>
               <Text accessibilityRole="header" style={{ fontSize: 26, fontWeight: "900", color: "#fff", letterSpacing: -0.5 }}>GoYellow</Text>
             </View>
