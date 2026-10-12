@@ -37,7 +37,8 @@ PYTHONPATH=worker .venv/bin/python -m classifier.make_synthetic   # SYNTHETIC da
 ```
 
 ## Honest status
-* District code -> bus number uses an ASSUMED format (`app/src/lib/districtCode.ts`): the last run of digits, leading zeros dropped. Change that one function when you know the real code format.
+* Birthday uses a calendar picker; the full birth date stays on the phone (only the birth year is uploaded).
+* District codes are Here Comes the Bus codes from district pages (`docs/DISTRICT_CODES.md`). Verify each with the district. The app does not integrate with Here Comes the Bus.
 * School dropdown data (`app/src/data/schools.json`) comes from OpenStreetMap for 12 Wake County cities (ODbL). It is incomplete
   and mixes public and private schools; students can choose "My school isn't listed". Replace it with an official
   NC DPI/NCES list before any real use.

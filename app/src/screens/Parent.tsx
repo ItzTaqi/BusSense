@@ -3,7 +3,8 @@ import { Alert, Text, TextInput } from "react-native";
 import { Badge, Btn, Card, H, Hero, P, Screen } from "../components/Ui";
 import { RouteTrack } from "../components/RouteTrack";
 import { sendReport, subscribeStatus, StatusRow } from "../lib/api";
-import { parseDistrictCode } from "../lib/districtCode";
+import { SelectField } from "../components/SelectField";
+import { DISTRICTS, districtLabel } from "../data/districts";
 import { leaveByMinutes, sourceLabel } from "../lib/leaveBy";
 import { DEMO_STEPS } from "../demo/scenario";
 import { supabase } from "../lib/supabase";
@@ -16,7 +17,7 @@ export function Parent({ tab }: { tab: string }) {
   const demo = useApp((s) => s.demo);
   const c = useTheme();
   const [route, setRoute] = useState("");
-  const [code, setCode] = useState("");
+  const [district, setDistrict] = useState(districtLabel(DISTRICTS[0]));
   const [stop, setStop] = useState("");
   const [walk, setWalk] = useState("3");
   const [saved, setSaved] = useState(false);
@@ -46,9 +47,8 @@ export function Parent({ tab }: { tab: string }) {
   if (!saved) return (
     <Screen>
       <H>Set up your stop</H>
-      <TextInput accessibilityLabel="District code" placeholder="District code" placeholderTextColor={c.sub} style={field} autoCapitalize="characters" autoCorrect={false}
-        value={code} maxLength={12} onChangeText={(v) => { setCode(v); setRoute(parseDistrictCode(v)?.bus ?? ""); }} />
-      {route ? <P dim>Bus {route}</P> : null}
+      <SelectField label="District" value={district} options={DISTRICTS.map(districtLabel)} onSelect={setDistrict} />
+      <TextInput accessibilityLabel="Bus number" placeholder="Bus number" placeholderTextColor={c.sub} style={field} value={route} onChangeText={setRoute} maxLength={8} />
       <TextInput accessibilityLabel="Stop" placeholder="Stop" placeholderTextColor={c.sub} style={field} value={stop} onChangeText={setStop} />
       <TextInput accessibilityLabel="Walking minutes" placeholder="Walking minutes" placeholderTextColor={c.sub} keyboardType="number-pad" style={field} value={walk} onChangeText={setWalk} />
       <Btn primary label="Save" disabled={!route || !stop} onPress={save} />
