@@ -11,3 +11,6 @@ __pycache__/
 eval/out/*
 !eval/out/.gitkeep
 .DS_Store
+.build/
+.swiftpm/
+*.xcodeproj/xcuserdata/
