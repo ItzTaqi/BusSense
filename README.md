@@ -46,7 +46,7 @@ PYTHONPATH=worker .venv/bin/python -m classifier.make_synthetic   # SYNTHETIC da
   and mixes public and private schools; students can choose "My school isn't listed". Replace it with an official
   NC DPI/NCES list before any real use.
 * The bundled classifier `app/src/classifier/model.json` is a **synthetic placeholder** (`synthetic_placeholder: true`).
-  Its metrics mean nothing. Record real bus/car/walk trips with the in-app logging build, then retrain with
+  Its metrics mean nothing. Collect real labeled bus/car/walk recordings (the in-app logging build was removed), then retrain with
   `worker/classifier/train.py`, regenerate vectors with `make_vectors.py`.
 * Adversarial results are on **simulated** traces. Real-ride accuracy, ETA error, time-to-LIVE, position error
   and battery numbers are not measured yet; scripts for those are TODO in `eval/`.
